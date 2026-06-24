@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posters — Carlos Cerqueira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=League+Spartan:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;
+  --white:#f0ede8;
+  --accent:#4dff91;
+  --accent2:#ff4e1a;
+  --gray:#111;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--white);font-family:'Space Mono',monospace;cursor:none;overflow-x:hidden}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+#cursorRing{position:fixed;width:34px;height:34px;border:1px solid rgba(77,255,145,.45);border-radius:50%;pointer-events:none;z-index:9998;top:0;left:0;will-change:transform}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;background:rgba(8,8,8,.8);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+.logo:hover{opacity:1}
+.nav-back{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.45;transition:all .2s}
+.nav-back:hover{opacity:1;color:var(--accent)}
+.nav-back .arr{transition:transform .2s}
+.nav-back:hover .arr{transform:translateX(-4px)}
+.nav-anchors{display:flex;gap:28px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-anchors a{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.4;transition:opacity .2s}
+.nav-anchors a:hover{opacity:1}
+
+/* ── HERO ── */
+.hero{height:calc(100vh + 2px);position:relative;overflow:visible;margin-bottom:-2px;display:flex;align-items:flex-end;padding:0 48px 80px;background:#1a1a1a}
+.hero-mark {
+  position: absolute;
+  right: -2vw; top: 50%; transform: translateY(-50%);
+  font-size: clamp(300px, 45vw, 600px);
+  line-height: 1; color: rgba(255,255,255,.025);
+  font-family: 'League Spartan', sans-serif;
+  user-select: none; white-space: nowrap;
+  animation: markFloat 10s ease-in-out infinite;
+  letter-spacing: -.05em; text-transform: uppercase;
+}
+@keyframes markFloat{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-52%) translateX(-16px)}}
+.hero-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--accent);
+}
+.hero-bg{display:none}
+/* Collage of posters as bg */
+.hero-poster-bg{
+  position:absolute;inset:0;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  opacity:.18;filter:saturate(1.3);
+}
+.hero-poster-bg img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,.5) 50%, transparent 100%),
+    linear-gradient(to right, rgba(8,8,8,.9) 0%, transparent 55%);
+}
+/* Noise grain */
+.hero-grain{
+  position:absolute;inset:0;pointer-events:none;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.hero-content{position:relative;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.project-tag{display:inline-block;font-size:9px;letter-spacing:.25em;text-transform:uppercase;background:var(--accent);color:#000;padding:5px 14px;margin-bottom:20px;animation:fadeUp .7s ease .2s both}
+.hero-title{font-family:'League Spartan',sans-serif;font-size:clamp(60px,10vw,130px);text-transform:uppercase;line-height:.95;animation:fadeUp .7s ease .35s both}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-meta{display:flex;flex-direction:column;gap:18px;min-width:190px;padding-bottom:8px;animation:fadeUp .7s ease .5s both}
+.meta-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.3;margin-bottom:3px}
+.meta-val{font-size:12px;opacity:.8}
+
+/* ── BRIEF ── */
+.brief-section{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brief-heading{font-family:'League Spartan',sans-serif;font-size:clamp(26px,3.5vw,44px);line-height:1.15}
+.brief-heading em{font-style:italic;color:var(--accent)}
+.brief-body{display:flex;flex-direction:column;justify-content:center;gap:18px}
+.brief-text{font-size:13px;line-height:1.9;opacity:.55}
+.brief-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+.brief-tag{font-size:9px;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,.15);padding:6px 14px;opacity:.6;transition:all .2s;cursor:none}
+.brief-tag:hover{border-color:var(--accent);color:var(--accent);opacity:1}
+
+/* ── SECTION SHARED ── */
+.section-wrap{padding:80px 48px}
+.section-wrap.alt{background:rgba(255,255,255,.02)}
+.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:52px;border-top:1px solid rgba(255,255,255,.08);padding-top:26px}
+.section-title{font-family:'League Spartan',sans-serif;font-size:clamp(32px,5vw,54px);letter-spacing:.05em}
+.section-num{font-size:11px;opacity:.28;letter-spacing:.15em}
+.section-desc{font-size:13px;opacity:.45;line-height:1.8;max-width:520px;margin-bottom:52px}
+
+/* ── POSTER GALLERY — VERTICAL 3-COL ── */
+.showcase-section{padding:80px 0 100px}
+.showcase-section .section-header,
+.showcase-section .section-desc{padding-left:48px;padding-right:48px}
+
+.poster-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3px;
+}
+.poster-cell{
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+  /* tall vertical format matching the image */
+  aspect-ratio:2/3;
+  background:#0d0d0d;
+}
+.poster-cell img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform .75s cubic-bezier(.25,.46,.45,.94),
+             filter .5s ease;
+  filter:brightness(.92) saturate(.95);
+  will-change:transform;
+}
+.poster-cell:hover img{
+  transform:scale(1.05);
+  filter:brightness(1) saturate(1.1);
+}
+
+/* index tag top-left */
+.poster-cell-num{
+  position:absolute;top:18px;left:20px;
+  font-size:9px;letter-spacing:.22em;
+  color:var(--white);opacity:.4;
+  z-index:2;transition:opacity .3s;
+}
+.poster-cell:hover .poster-cell-num{opacity:.8}
+
+/* bottom info — slides up on hover */
+.poster-cell-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:28px 24px 24px;
+  background:linear-gradient(to top,rgba(8,8,8,.92) 0%,rgba(8,8,8,.4) 60%,transparent 100%);
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+  z-index:2;
+}
+.poster-cell:hover .poster-cell-info{transform:translateY(0)}
+.poster-cell-title{
+  font-family:'League Spartan',sans-serif;
+  font-size:clamp(16px,1.6vw,22px);
+  margin-bottom:5px;line-height:1.1;
+}
+.poster-cell-sub{
+  font-size:9px;opacity:.45;
+  letter-spacing:.15em;text-transform:uppercase;
+}
+
+/* thin accent line that grows on hover */
+.poster-cell::after{
+  content:'';
+  position:absolute;bottom:0;left:0;
+  width:0;height:2px;
+  background:var(--accent);
+  transition:width .5s cubic-bezier(.25,.46,.45,.94);
+  z-index:3;
+}
+.poster-cell:hover::after{width:100%}
+
+@media(max-width:900px){
+  .poster-gallery{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .poster-gallery{grid-template-columns:1fr}
+  .showcase-section .section-header,
+  .showcase-section .section-desc{padding-left:24px;padding-right:24px}
+}
+
+/* ── MOCKUPS ── */
+.mockup-section{padding:80px 48px 0;background:rgba(255,255,255,.02)}
+
+/* text block above */
+.mockup-text{
+  max-width:600px;
+  margin-bottom:64px;
+}
+
+/* single fullscreen image */
+.mockup-fullscreen{
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+  margin:0 -48px;          /* bleed to page edges */
+  aspect-ratio:16/8;
+}
+.mockup-fullscreen img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  filter:brightness(.88);
+  transform:scale(1.04);
+  transition:transform 1.2s cubic-bezier(.25,.46,.45,.94),
+             filter .7s ease;
+  will-change:transform;
+}
+.mockup-fullscreen.in-view img{
+  transform:scale(1);
+}
+.mockup-fullscreen:hover img{
+  filter:brightness(1);
+  transform:scale(1.02) !important;
+}
+
+/* ── PROCESS / STATS BAR ── */
+.process-bar{
+  padding:64px 48px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.process-item{
+  padding:0 32px;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.process-item:first-child{padding-left:0}
+.process-item:last-child{border-right:none}
+.process-num{
+  font-family:'League Spartan',sans-serif;font-size:52px;
+  color:rgba(77,255,145,.25);line-height:1;margin-bottom:6px;
+}
+.process-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.35;margin-bottom:4px}
+.process-val{font-size:12px;opacity:.7;line-height:1.5}
+
+/* ── LIGHTBOX ── */
+#lightbox{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(8,8,8,.97);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+  backdrop-filter:blur(16px);
+}
+#lightbox.open{opacity:1;pointer-events:all}
+#lb-img{
+  max-width:88vw;max-height:88vh;
+  object-fit:contain;display:block;
+  transform:scale(.93);transition:transform .38s ease;
+  /* shadow to lift poster off black bg */
+  box-shadow:0 40px 120px rgba(0,0,0,.8);
+}
+#lightbox.open #lb-img{transform:scale(1)}
+#lb-close{
+  position:absolute;top:28px;right:36px;
+  font-size:26px;color:var(--white);opacity:.4;
+  cursor:none;transition:opacity .2s;
+  font-family:'Space Mono',monospace;line-height:1;
+}
+#lb-close:hover{opacity:1}
+#lb-caption{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  text-align:center;white-space:nowrap;
+}
+#lb-cap-title{font-family:'League Spartan',sans-serif;font-size:19px;margin-bottom:4px}
+#lb-cap-sub{font-size:9px;opacity:.38;letter-spacing:.18em;text-transform:uppercase}
+#lb-prev,#lb-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  font-size:20px;opacity:.3;cursor:none;transition:opacity .2s;
+  font-family:'Space Mono',monospace;padding:18px;
+}
+#lb-prev{left:20px}
+#lb-next{right:20px}
+#lb-prev:hover,#lb-next:hover{opacity:1}
+#lb-counter{
+  position:absolute;top:28px;left:48px;
+  font-size:10px;opacity:.3;letter-spacing:.15em;
+}
+
+/* ── NEXT ── */
+.next-section{
+  position:relative;overflow:hidden;height:300px;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--white);
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.next-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;filter:brightness(.18);
+  transition:transform .7s,filter .4s;
+}
+.next-section:hover .next-bg{transform:scale(1.04);filter:brightness(.3)}
+.next-overlay{position:absolute;inset:0;background:rgba(8,8,8,.4)}
+.next-content{position:relative;text-align:center}
+.next-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:14px}
+.next-title{font-family:'League Spartan',sans-serif;font-size:clamp(30px,5vw,58px);line-height:1;margin-bottom:16px;transition:color .3s}
+.next-section:hover .next-title{color:var(--accent)}
+.next-arr{font-size:24px;opacity:.4;transition:all .3s;display:block}
+.next-section:hover .next-arr{opacity:1;transform:translateX(8px)}
+
+.proj-footer{padding:36px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);opacity:.3;font-size:11px;letter-spacing:.08em}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:768px){
+  nav{padding:18px 24px}
+  .nav-anchors{display:none}
+  .hero{padding:0 24px 60px}
+  .hero-content{flex-direction:column;gap:20px;align-items:flex-start;justify-content:flex-end}
+  .hero-meta{flex-direction:row;width:100%;min-width:0;gap:0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px;padding-bottom:0}
+  .hero-meta .meta-item{flex:1}
+  .brief-section{grid-template-columns:1fr;padding:60px 24px;gap:36px}
+  .showcase-section,.mockup-section,.section-wrap{padding-left:24px;padding-right:24px}
+  .mockup-grid{grid-template-columns:1fr}
+  .mockup-strip{grid-template-columns:1fr 1fr}
+  .process-bar{grid-template-columns:1fr 1fr;gap:0}
+  .process-item{padding:24px;border-bottom:1px solid rgba(255,255,255,.06)}
+}
+
+/* ── MOBILE NAV ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none;
+  cursor: pointer; padding: 4px;
+  z-index: 300;
+}
+.hamburger span {
+  display: block;
+  width: 100%; height: 1px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  z-index: 250;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(42px, 12vw, 72px);
+  letter-spacing: 0.06em;
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.15;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1.15;
+}
+.mobile-menu a:hover { opacity: 1; color: var(--accent); }
+.mobile-close {
+  position: absolute;
+  top: 28px; right: 24px;
+  background: none; border: none;
+  color: var(--white);
+  font-size: 22px;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  line-height: 1;
+  padding: 8px;
+}
+.mobile-close:hover { opacity: 1; }
+@media (max-width: 768px) {
+  .nav-back { display: none; }
+  .hamburger { display: flex; }
+  body.menu-open { overflow: hidden; }
+}
+
+/* ── MOBILE NAV ── */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;z-index:300}
+.hamburger span{display:block;width:100%;height:1px;background:var(--white);transition:transform .3s,opacity .3s;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);z-index:250;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'League Spartan',sans-serif;font-size:clamp(36px,10vw,62px);letter-spacing:.06em;color:var(--white);text-decoration:none;opacity:.15;transition:opacity .2s,color .2s;line-height:1.2}
+.mobile-menu a:hover{opacity:1;color:var(--accent)}
+.mobile-menu .back-link{font-size:clamp(18px,5vw,28px);opacity:.3;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:24px;width:80%;text-align:center}
+.mobile-close{position:absolute;top:28px;right:24px;background:none;border:none;color:var(--white);font-size:22px;opacity:.4;cursor:pointer;transition:opacity .2s;line-height:1;padding:8px}
+.mobile-close:hover{opacity:1}
+@media(max-width:768px){.nav-back{display:none}.hamburger{display:flex}body.menu-open{overflow:hidden}}
+/* GRADIENT MESH */
+.mesh-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(10,80,40,0.95) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(20,120,60,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(5,50,25,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(30,100,50,0.7) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(10,60,30,0.8) 0%, transparent 65%),
+    #080808;
+}
+.hero-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 35%;
+  background: linear-gradient(to top, #080808 0%, transparent 100%);
+  z-index: 50;
+  pointer-events: none;
+}
+.hero-mark { display: none !important; }
+.hero-content, .hero-content * { position: relative; }
+.hero-content { z-index: 10 !important; }
+
+/* GRAIN TEXTURE */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: soft-light;
+}
+.hero, .project-hero { border-bottom: none !important; }
+
+
+
+
+
+/* Remove top border from first section after hero */
+.hero + * { border-top: none !important; }
+.project-hero + * { border-top: none !important; }
+.brief-section { border-top: none !important; }
+
+
+
+/* ── HERO MESH ── */
+.hero-mesh {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(10,80,40,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(20,120,60,0.8) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(5,50,25,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(30,100,50,0.65) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(10,60,30,0.75) 0%, transparent 65%),
+    #080808;
+}
+.hero-content { position: relative; z-index: 10 !important; }
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor, #cursorRing { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lb-counter"></span>
+  <span id="lb-prev">←</span>
+  <img id="lb-img" src="" alt="">
+  <span id="lb-next">→</span>
+  <div id="lb-caption">
+    <div id="lb-cap-title"></div>
+    <div id="lb-cap-sub"></div>
+  </div>
+  <span id="lb-close">✕</span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">CC</a>
+  <ul class="nav-anchors">
+    <li><a href="#posters">Posters</a></li>
+    <li><a href="#mockups">Mockups</a></li>
+  </ul>
+  <a href="index.html" class="nav-back"><span class="arr">←</span> All Work</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose" aria-label="Close">&#x2715;</button>
+  <a href="index.html" class="mobile-link back-link">← All Work</a>
+  <a href="#posters" class="mobile-link">Posters</a>
+  <a href="#mockups" class="mobile-link">Mockups</a>
+</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="mesh-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div>
+      <div class="project-tag">Graphic Design · Print · 2021–2022</div>
+      <h1 class="hero-title">Poster<br><em>Design</em></h1>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">Medium</div>
+        <div class="meta-val">Print · Digital</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-val">Graphic Design</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-val">2021 — 2022</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section class="brief-section">
+  <div>
+    <h2 class="brief-heading">Design that<br>adapts to every<br><em>challenge.</em></h2>
+  </div>
+  <div class="brief-body">
+    <p class="brief-text">A collection of poster work spanning graphic design, branding, illustration, and typography. Each piece represents a different facet of the design practice — from bold typographic compositions to rich visual storytelling.</p>
+    <p class="brief-text">Every client is unique. Every brief demands a different visual language. These posters are a testament to that versatility — the ability to shift register, tone, and aesthetic to meet any creative challenge.</p>
+    <div class="brief-tags">
+      <span class="brief-tag">Graphic Design</span>
+      <span class="brief-tag">Print</span>
+      <span class="brief-tag">Typography</span>
+      <span class="brief-tag">Illustration</span>
+      <span class="brief-tag">Branding</span>
+      <span class="brief-tag">Digital</span>
+    </div>
+  </div>
+</section>
+
+<!-- POSTER SHOWCASE -->
+<section class="showcase-section" id="posters">
+  <div class="section-header">
+    <h2 class="section-title">The Work</h2>
+    <span class="section-num">01 — 06</span>
+  </div>
+  <p class="section-desc">Six poster compositions — each a different visual register, discipline, and world. Click any to open full view.</p>
+
+  <div class="poster-gallery">
+
+    <!-- 01 — Cosmic / Abstract -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/C1.png"
+         data-title="Cosmic Abstraction" data-sub="Graphic Design · Print">
+      <span class="poster-cell-num">01</span>
+      <img src="https://carlosmccerq.github.io/portfolio/img/poster/C1.png" alt="Cosmic Abstraction">
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">Art Exhibition</div>
+        <div class="poster-cell-sub">Graphic Design · Print</div>
+      </div>
+    </div>
+
+    <!-- 02 — Pocas / Douro -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/poster1.png"
+         data-title="O Melhor do Douro" data-sub="Advertising · Collage">
+      <span class="poster-cell-num">02</span>
+      <img src="img/poster/nirvana.png" alt="O Melhor do Douro">·
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">Nirvana ·Bodoni</div>
+        <div class="poster-cell-sub">Advertising · Collage · Coding Art</div>
+      </div>
+    </div>
+
+    <!-- 03 — Atmospheric / Julho -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/poster2.png"
+         data-title="Julho 12–15" data-sub="Event · Typography">
+      <span class="poster-cell-num">03</span>
+      <img src="https://carlosmccerq.github.io/portfolio/img/poster/poster2.png" alt="Julho 12–15">
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">Herb Lubalin</div>
+        <div class="poster-cell-sub">Event · Typography · Processing</div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/poster3.png"
+         data-title="Poster 04" data-sub="Illustration · Print">
+      <span class="poster-cell-num">04</span>
+      <img src="https://carlosmccerq.github.io/portfolio/img/poster/poster3.png" alt="Poster 04">
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">Multimedia</div>
+        <div class="poster-cell-sub">Illustration · Print · Blender 3D</div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/poster4.png"
+         data-title="Poster 05" data-sub="Typography · Print">
+      <span class="poster-cell-num">05</span>
+      <img src="https://carlosmccerq.github.io/portfolio/img/poster/poster4.png" alt="Poster 05">
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">O Melhor do Douro</div>
+        <div class="poster-cell-sub">Typography · Print</div>
+      </div>
+    </div>
+
+    <!-- 06 — C1 alt crop -->
+    <div class="poster-cell lb-trigger"
+         data-src="https://carlosmccerq.github.io/portfolio/img/poster/C7.png"
+         data-title="Composition I — Alt" data-sub="Graphic Design · Print">
+      <span class="poster-cell-num">06</span>
+      <img src="https://carlosmccerq.github.io/portfolio/img/poster/C7.png" alt="Composition I Alt"
+           style="object-position:bottom center;">
+      <div class="poster-cell-info">
+        <div class="poster-cell-title">Melting Food Fest</div>
+        <div class="poster-cell-sub">Graphic Design · Print</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MOCKUPS -->
+<section class="mockup-section" id="mockups">
+  <div class="section-header">
+    <h2 class="section-title">In Context</h2>
+    <span class="section-num">02</span>
+  </div>
+  <div class="mockup-text">
+    <p class="section-desc" style="margin-bottom:0;">Every poster is designed to exist in the world — on walls, in spaces, at scale. These mockups demonstrate how each piece performs beyond the screen.</p>
+  </div>
+
+  <div class="mockup-fullscreen lb-trigger"
+       data-src="https://carlosmccerq.github.io/portfolio/img/poster/mockup.jpg"
+       data-title="Poster in situ" data-sub="Real-world application">
+    <img src="https://carlosmccerq.github.io/portfolio/img/poster/mockup.jpg"
+         alt="Poster in context">
+  </div>
+</section>
+
+<!-- NEXT -->
+<a href="project-3d-illustrations.html" class="next-section">
+
+  <div class="next-overlay"></div>
+  <div class="next-content">
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title">3D Illustrations</h2>
+    <span class="next-arr">→</span>
+  </div>
+</a>
+
+<div class="proj-footer">
+  <span>Carlos Cerqueira © 2026</span>
+  <span>Graphic Design · Porto</span>
+</div>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px,${my-5}px)`;
+});
+(function loop(){
+  rx += (mx-rx)*.13; ry += (my-ry)*.13;
+  ring.style.transform = `translate(${rx-17}px,${ry-17}px)`;
+  requestAnimationFrame(loop);
+})();
+
+// ── PARALLAX HERO POSTERS ──
+const heroBg = document.querySelector('.hero-poster-bg');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (heroBg) heroBg.style.transform = `translateY(${y * .3}px)`;
+});
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: .07 });
+
+document.querySelectorAll(
+  '.brief-section,.poster-cell,.process-item'
+).forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = `opacity .7s ease ${i * .055}s, transform .7s ease ${i * .055}s`;
+  obs.observe(el);
+});
+
+// ── FULLSCREEN MOCKUP SCALE-IN ──
+const fsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); fsObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.mockup-fullscreen').forEach(el => fsObs.observe(el));
+
+// ── LIGHTBOX ──
+const lb       = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+const lbTitle  = document.getElementById('lb-cap-title');
+const lbSub    = document.getElementById('lb-cap-sub');
+const lbClose  = document.getElementById('lb-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+const lbCounter= document.getElementById('lb-counter');
+
+const lbItems = [];
+
+document.querySelectorAll('.lb-trigger').forEach(el => {
+  const idx = lbItems.length;
+  lbItems.push({
+    src:   el.dataset.src   || el.querySelector('img')?.src || '',
+    title: el.dataset.title || '',
+    sub:   el.dataset.sub   || ''
+  });
+  el.addEventListener('click', () => openLb(idx));
+});
+
+let cur = 0;
+
+function openLb(idx) {
+  cur = idx;
+  const item = lbItems[idx];
+  lbImg.src = item.src;
+  lbTitle.textContent = item.title;
+  lbSub.textContent   = item.sub;
+  lbCounter.textContent = `${idx + 1} / ${lbItems.length}`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function next() { openLb((cur + 1) % lbItems.length); }
+function prev() { openLb((cur - 1 + lbItems.length) % lbItems.length); }
+
+lbClose.addEventListener('click', closeLb);
+lbNext.addEventListener('click', next);
+lbPrev.addEventListener('click', prev);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeLb();
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft')  prev();
+});
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('hamburger');
+  var menu=document.getElementById('mobileMenu');
+  var closeBtn=document.getElementById('mobileClose');
+  var links=menu.querySelectorAll('a');
+  function closeMenu(){btn.classList.remove('open');menu.classList.remove('open');document.body.classList.remove('menu-open');}
+  btn.addEventListener('click',function(){menu.classList.contains('open')?closeMenu():(btn.classList.add('open'),menu.classList.add('open'),document.body.classList.add('menu-open'));});
+  if(closeBtn)closeBtn.addEventListener('click',closeMenu);
+  links.forEach(function(a){a.addEventListener('click',closeMenu);});
+})();
+</script>
+</body>
+</html>

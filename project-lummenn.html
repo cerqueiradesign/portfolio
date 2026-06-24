@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lummenn — Carlos Cerqueira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=League+Spartan:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #080808;
+  --white: #f0ede8;
+  --accent: #4dff91;
+  --accent2: #ff4e1a;
+  --gray: #111;
+  --lummenn: #2d5a52;
+  --lummenn-light: #4a8c80;
+}
+
+html{ scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Space Mono', monospace;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* CURSOR */
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  top: 0; left: 0; will-change: transform;
+}
+#cursorRing {
+  position: fixed; width: 34px; height: 34px;
+  border: 1px solid rgba(77,255,145,0.45); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  top: 0; left: 0; will-change: transform;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 48px;
+  background: rgba(8,8,8,0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+.logo:hover { opacity: 1; }
+.nav-back {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; opacity: 0.45; transition: all 0.2s;
+}
+.nav-back:hover { opacity: 1; color: var(--accent); }
+.nav-back .arr { transition: transform 0.2s; }
+.nav-back:hover .arr { transform: translateX(-4px); }
+.nav-anchors {
+  display: flex; gap: 28px; list-style: none;
+}
+.nav-anchors a {
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; opacity: 0.4; transition: opacity 0.2s;
+}
+.nav-anchors a:hover { opacity: 1; }
+
+/* HERO */
+.project-hero {
+  height: calc(100vh + 2px); position: relative; overflow: visible; margin-bottom: -2px;
+  display: flex; align-items: flex-end;
+  padding: 0 48px 80px;
+  background: #080808;
+}
+.hero-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--accent);
+}
+.hero-bg { display: none; }
+.hero-grid-lines { display: none; }
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,8,8,0.98) 0%, rgba(8,8,8,0.1) 55%, transparent 100%);
+}
+
+/* Floating browser mockup in hero */
+.hero-mockup {
+  position: absolute;
+  top: 50%; right: 48px;
+  transform: translateY(-50%);
+  width: 52%;
+  max-width: 700px;
+  animation: fadeUp 1s ease 0.6s both;
+}
+.browser-chrome {
+  background: #080808;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-bottom: none;
+}
+.browser-dots { display: flex; gap: 6px; }
+.browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+.browser-dot:nth-child(1) { background: #ff5f57; }
+.browser-dot:nth-child(2) { background: #febc2e; }
+.browser-dot:nth-child(3) { background: #28c840; }
+.browser-url {
+  flex: 1; background: rgba(255,255,255,0.06);
+  border-radius: 4px; padding: 4px 12px;
+  font-size: 10px; opacity: 0.4; letter-spacing: 0.05em;
+}
+.browser-screen {
+  background: #2d5a52;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  position: relative;
+}
+
+.browser-screen img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  display: block;
+}
+
+.hero-content {
+  position: relative; width: 50%;
+  display: flex; flex-direction: column; gap: 20px;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+.project-tag {
+  display: inline-block; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+  background: var(--accent); color: #000;
+  padding: 5px 14px; width: fit-content;
+}
+.hero-title {
+  font-family:'League Spartan',sans-serif;
+  font-size:clamp(60px,10vw,130px); text-transform: uppercase;
+  line-height:.95;
+}
+.hero-title em { font-style: italic; color: var(--accent); }
+.hero-meta {
+  display: flex; gap: 32px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.meta-item {}
+.meta-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.3; margin-bottom: 4px; }
+.meta-val { font-size: 11px; opacity: 0.8; }
+
+/* INTRO */
+.intro-section {
+  padding: 140px 48px 100px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.intro-heading {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(28px, 3.5vw, 46px); line-height: 1.15;
+}
+.intro-heading em { font-style: italic; color: var(--accent); }
+.intro-body { display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.intro-text { font-size: 13px; line-height: 1.9; opacity: 0.55; }
+.intro-stats {
+  display: flex; gap: 40px; margin-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px;
+}
+.stat-num { font-family: 'League Spartan', sans-serif; font-size: 42px; color: var(--accent); line-height: 1; }
+.stat-label { font-size: 10px; opacity: 0.4; letter-spacing: 0.1em; margin-top: 2px; }
+
+/* SHARED SECTION HEADER */
+.section-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 56px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+}
+.section-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(32px, 5vw, 54px); letter-spacing: 0.05em;
+}
+.section-num { font-size: 11px; opacity: 0.28; letter-spacing: 0.15em; }
+.section-desc { font-size: 12px; opacity: 0.4; max-width: 480px; line-height: 1.7; margin-bottom: 48px; }
+
+/* ── SCREENS SECTION ── */
+.screens-section { padding: 100px 48px; }
+
+/* Full-width hero screen */
+.screen-hero {
+  width: 100%; margin-bottom: 4px;
+  background: #080808;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.screen-chrome {
+  background: #1e1e1e;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.s-dots { display: flex; gap: 5px; }
+.s-dot { width: 9px; height: 9px; border-radius: 50%; }
+.s-dot:nth-child(1) { background: #ff5f57; }
+.s-dot:nth-child(2) { background: #febc2e; }
+.s-dot:nth-child(3) { background: #28c840; }
+.s-url {
+  flex: 1; background: rgba(255,255,255,0.05);
+  border-radius: 3px; padding: 4px 12px;
+  font-size: 9px; opacity: 0.35; letter-spacing: 0.05em;
+}
+.screen-body {
+  width: 100%;
+  aspect-ratio: 16/8;
+  overflow: hidden;
+  position: relative;
+}
+.screen-body img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+  filter: brightness(0.9);
+  transition: transform 0.8s ease;
+}
+.screen-hero:hover .screen-body img { transform: scale(1.02); }
+.screen-label {
+  position: absolute; bottom: 20px; left: 20px;
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.5;
+  background: rgba(8,8,8,0.7); backdrop-filter: blur(8px);
+  padding: 5px 12px; border-radius: 3px;
+}
+
+/* Screen grid */
+.screens-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 4px; margin-bottom: 4px;
+}
+.screen-card {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: none;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative;
+}
+.screen-card:hover {
+  border-color: rgba(77,255,145,0.2);
+  transform: translateY(-3px);
+}
+.screen-card-chrome {
+  background: #080808;
+  padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sc-dots { display: flex; gap: 4px; }
+.sc-dot { width: 7px; height: 7px; border-radius: 50%; }
+.sc-dot:nth-child(1) { background: rgba(255,95,87,0.6); }
+.sc-dot:nth-child(2) { background: rgba(254,188,46,0.6); }
+.sc-dot:nth-child(3) { background: rgba(40,200,64,0.6); }
+.sc-url {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border-radius: 3px; padding: 3px 8px;
+  font-size: 8px; opacity: 0.3; letter-spacing: 0.05em;
+}
+.screen-card-img {
+  width: 100%; aspect-ratio: 4/3;
+  overflow: hidden; position: relative;
+}
+.screen-card-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+  filter: brightness(0.85) saturate(0.9);
+  transition: transform 0.5s ease, filter 0.3s;
+}
+.screen-card:hover .screen-card-img img {
+  transform: scale(1.04);
+  filter: brightness(1) saturate(1.1);
+}
+.screen-card-info {
+  padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.screen-card-name { font-size: 10px; letter-spacing: 0.1em; opacity: 0.6; }
+.screen-card-tag {
+  font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); opacity: 0.7;
+  border: 1px solid rgba(77,255,145,0.3); padding: 2px 8px;
+}
+
+/* Simulated screens using CSS */
+.sim-screen {
+  width: 100%; height: 100%;
+  position: relative; overflow: hidden;
+}
+/* Placeholder image fill */
+.screen-card-img img,
+.screen-body img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  display: block;
+}
+
+
+/* ── COMPONENTS SECTION ── */
+.components-section { padding: 100px 48px; background: rgba(255,255,255,0.02); }
+
+.components-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.comp-card {
+  background: #0e0e0e;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 32px;
+  cursor: none;
+  transition: border-color 0.3s;
+  position: relative; overflow: hidden;
+}
+.comp-card:hover { border-color: rgba(77,255,145,0.15); }
+.comp-card.wide { grid-column: span 2; }
+
+.comp-label {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); opacity: 0.6; margin-bottom: 24px;
+}
+.comp-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: 20px; margin-bottom: 20px; opacity: 0.8;
+}
+
+/* Nav component */
+.comp-nav-demo {
+  background: #243e38;
+  padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 4px;
+}
+.comp-nav-logo { font-family: 'League Spartan', sans-serif; font-size: 16px; color: rgba(255,255,255,0.9); }
+.comp-nav-items { display: flex; gap: 20px; }
+.comp-nav-item { font-size: 9px; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; }
+.comp-nav-item.active { color: rgba(255,255,255,0.85); }
+.comp-nav-lang { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+
+/* Colour palette */
+.palette-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+}
+.palette-swatch {
+  aspect-ratio: 1; border-radius: 4px; position: relative;
+}
+.palette-name {
+  font-size: 7px; margin-top: 6px; opacity: 0.4; letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Typography showcase */
+.type-showcase { display: flex; flex-direction: column; gap: 16px; }
+.type-row { display: flex; align-items: baseline; gap: 16px; }
+.type-sample { opacity: 0.85; }
+.type-meta { font-size: 8px; opacity: 0.25; letter-spacing: 0.1em; white-space: nowrap; }
+
+/* Footer component */
+.comp-footer-demo {
+  background: #1e3530;
+  padding: 20px 24px;
+  border-radius: 4px;
+}
+.comp-footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.comp-footer-logo { font-family: 'League Spartan', sans-serif; font-size: 18px; color: rgba(255,255,255,0.85); }
+.comp-footer-col-title { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(74,140,128,0.9); margin-bottom: 8px; }
+.comp-footer-link { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 0.06em; margin-bottom: 4px; }
+.comp-footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; }
+.comp-footer-policy { font-size: 8px; color: rgba(255,255,255,0.25); text-decoration: underline; }
+.comp-footer-socials { display: flex; gap: 12px; }
+.comp-footer-social { width: 20px; height: 20px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: rgba(255,255,255,0.4); }
+
+/* Newsletter component */
+.comp-newsletter-demo {
+  background: #243e38;
+  padding: 24px; border-radius: 4px;
+}
+.comp-nl-title { font-family: 'League Spartan', sans-serif; font-size: 28px; color: rgba(255,255,255,0.85); line-height: 1.1; margin-bottom: 20px; }
+.comp-nl-row { display: flex; align-items: flex-end; gap: 16px; }
+.comp-nl-field { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 8px; font-size: 11px; opacity: 0.35; letter-spacing: 0.08em; }
+.comp-nl-btn { width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255,255,255,0.6); flex-shrink: 0; cursor: none; transition: all 0.2s; }
+.comp-nl-btn:hover { background: rgba(255,255,255,0.08); }
+
+/* ── PROCESS SECTION ── */
+.process-section { padding: 100px 48px; border-top: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); }
+.process-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 60px;
+}
+.proc-step {
+  background: var(--gray); padding: 36px 28px;
+  position: relative; overflow: hidden; transition: background 0.3s;
+}
+.proc-step::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+}
+.proc-step:hover { background: #161616; }
+.proc-step:hover::after { transform: scaleX(1); }
+.proc-num {
+  font-family: 'League Spartan', sans-serif; font-size: 56px;
+  opacity: 0.05; position: absolute; top: 12px; right: 16px;
+}
+.proc-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); opacity: 0.65; margin-bottom: 12px; }
+.proc-title { font-family: 'League Spartan', sans-serif; font-size: 20px; margin-bottom: 10px; line-height: 1.2; }
+.proc-desc { font-size: 11px; line-height: 1.8; opacity: 0.4; }
+
+/* NEXT PROJECT */
+.next-section {
+  position: relative; overflow: hidden;
+  height: 320px; display: flex; align-items: center; justify-content: center;
+  text-decoration: none; color: var(--white);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.next-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; filter: brightness(0.2); transition: transform 0.6s, filter 0.4s;
+}
+.next-section:hover .next-bg { transform: scale(1.04); filter: brightness(0.32); }
+.next-overlay { position: absolute; inset: 0; background: rgba(8,8,8,0.4); }
+.next-content { position: relative; text-align: center; }
+.next-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.35; margin-bottom: 14px; }
+.next-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(32px, 5vw, 60px); line-height: 1; margin-bottom: 18px;
+  transition: color 0.3s;
+}
+.next-section:hover .next-title { color: var(--accent); }
+.next-arr { font-size: 26px; opacity: 0.45; transition: all 0.3s; display: block; }
+.next-section:hover .next-arr { opacity: 1; transform: translateX(8px); }
+
+/* FOOTER */
+.proj-footer {
+  padding: 36px 48px; display: flex; justify-content: space-between;
+  align-items: center; border-top: 1px solid rgba(255,255,255,0.06);
+  opacity: 0.35; font-size: 11px; letter-spacing: 0.08em;
+}
+
+/* ── MOBILE UI SECTION ── */
+.mobile-section {
+  padding: 100px 48px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.mobile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 8px;
+}
+.mobile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.mobile-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mobile-item img {
+  width: 100%;
+  max-width: 986px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 32px 64px rgba(0,0,0,0.6));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+.mobile-item:hover img {
+  transform: translateY(-8px) scale(1.02);
+  filter: drop-shadow(0 48px 80px rgba(0,0,0,0.7));
+}
+.mobile-item-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .mobile-section { padding-left: 20px; padding-right: 20px; }
+  .mobile-grid { grid-template-columns: 1fr; gap: 48px; }
+  .mobile-item img { max-width: 754px; }
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(22px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav, .intro-section, .screens-section, .components-section, .process-section { padding-left: 20px; padding-right: 20px; }
+  .project-hero { padding: 0 20px 60px; }
+  .hero-mockup { display: none; }
+  .hero-content { width: 100%; }
+  .intro-section { grid-template-columns: 1fr; gap: 36px; }
+  .screens-grid { grid-template-columns: 1fr; }
+  .components-grid { grid-template-columns: 1fr; }
+  .comp-card.wide { grid-column: span 1; }
+  .process-grid { grid-template-columns: repeat(2,1fr); }
+  .comp-footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── MOBILE NAV ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none;
+  cursor: pointer; padding: 4px;
+  z-index: 300;
+}
+.hamburger span {
+  display: block;
+  width: 100%; height: 1px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  z-index: 250;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(42px, 12vw, 72px);
+  letter-spacing: 0.06em;
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.15;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1.15;
+}
+.mobile-menu a:hover { opacity: 1; color: var(--accent); }
+.mobile-close {
+  position: absolute;
+  top: 28px; right: 24px;
+  background: none; border: none;
+  color: var(--white);
+  font-size: 22px;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  line-height: 1;
+  padding: 8px;
+}
+.mobile-close:hover { opacity: 1; }
+@media (max-width: 768px) {
+  .nav-back { display: none; }
+  .hamburger { display: flex; }
+  body.menu-open { overflow: hidden; }
+}
+
+/* ── MOBILE NAV ── */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;z-index:300}
+.hamburger span{display:block;width:100%;height:1px;background:var(--white);transition:transform .3s,opacity .3s;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);z-index:250;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'League Spartan',sans-serif;font-size:clamp(36px,10vw,62px);letter-spacing:.06em;color:var(--white);text-decoration:none;opacity:.15;transition:opacity .2s,color .2s;line-height:1.2}
+.mobile-menu a:hover{opacity:1;color:var(--accent)}
+.mobile-menu .back-link{font-size:clamp(18px,5vw,28px);opacity:.3;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:24px;width:80%;text-align:center}
+.mobile-close{position:absolute;top:28px;right:24px;background:none;border:none;color:var(--white);font-size:22px;opacity:.4;cursor:pointer;transition:opacity .2s;line-height:1;padding:8px}
+.mobile-close:hover{opacity:1}
+@media(max-width:768px){.nav-back{display:none}.nav-anchors{display:none}.hamburger{display:flex}body.menu-open{overflow:hidden}}
+.hero-mark { display: none !important; }
+.hero-content, .hero-content * { position: relative; }
+.hero-content { z-index: 10 !important; }
+
+/* GRAIN TEXTURE */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: soft-light;
+}
+.hero, .project-hero { border-bottom: none !important; }
+
+
+
+
+
+/* Remove top border from first section after hero */
+.hero + * { border-top: none !important; }
+.project-hero + * { border-top: none !important; }
+.brief-section { border-top: none !important; }
+
+
+
+/* ── HERO MESH ── */
+.hero-mesh {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(10,80,40,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(45,90,82,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(5,50,25,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(74,140,128,0.65) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(10,60,30,0.75) 0%, transparent 65%),
+    #080808;
+}
+.hero-content { position: relative; z-index: 10 !important; }
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor, #cursorRing { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="logo">CC</a>
+  <ul class="nav-anchors">
+    <li><a href="#screens">Screens</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#mobile">Mobile</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="index.html" class="nav-back"><span class="arr">←</span> All Work</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose" aria-label="Close">&#x2715;</button>
+  <a href="index.html" class="mobile-link back-link">← All Work</a>
+  <a href="#screens" class="mobile-link">Screens</a>
+  <a href="#components" class="mobile-link">Components</a>
+  <a href="#mobile" class="mobile-link">Mobile</a>
+  <a href="#process" class="mobile-link">Process</a>
+</div>
+<!-- HERO -->
+<section class="project-hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- Floating browser mockup -->
+  <div class="hero-mockup">
+    <div class="browser-chrome">
+      <div class="browser-dots">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+      </div>
+      <div class="browser-url">lummenn.pt</div>
+    </div>
+    <div class="browser-screen">
+      <!-- SUBSTITUIR: imagem do hero (mockup homepage) -->
+      <img src="img/lumenn/05.png" alt="Lummenn Homepage Mockup">
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <span class="project-tag">UI Design · 2023—2024</span>
+    <h1 class="hero-title">Lumm<em>enn</em></h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <p class="meta-label">Client</p>
+        <p class="meta-val">Lummenn</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-val">UI Design</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Tools</p>
+        <p class="meta-val">Figma · Adobe XD</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro-section">
+  <div>
+    <h2 class="intro-heading">A digital face for<br>Portugal's most <em>refined</em><br>window systems.</h2>
+  </div>
+  <div class="intro-body">
+    <p class="intro-text">Lummenn is a premium Portuguese glazing brand — Lummenn 30, 40, 60, 70 and Canyon systems installed in some of the country's most prestigious residential projects. The challenge: translate that physical precision and material beauty into a digital experience.</p>
+    <p class="intro-text">The website needed to feel as considered as the products themselves — minimal, confident, and architectural in its rhythm. Every screen, component, and interaction was designed to reflect the brand's core values of ultra-minimalism, durability, and light.</p>
+    <div class="intro-stats">
+      <div class="stat-item">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Page templates</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">9</div>
+        <div class="stat-label">Systems showcased</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Languages</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENS -->
+<section class="screens-section" id="screens">
+  <div class="section-header">
+    <h2 class="section-title">Key Screens</h2>
+    <span class="section-num">01</span>
+  </div>
+  <p class="section-desc">Full-page designs covering the homepage, product system pages, project showcases, and contact — each maintaining the brand's architectural restraint.</p>
+
+  <!-- Hero screen: Homepage -->
+  <div class="screen-hero" style="margin-bottom: 4px;">
+    <div class="screen-chrome">
+      <div class="s-dots"><div class="s-dot"></div><div class="s-dot"></div><div class="s-dot"></div></div>
+      <div class="s-url">lummenn.pt — Homepage</div>
+    </div>
+    <div class="screen-body">
+      <!-- SUBSTITUIR: imagem da homepage completa -->
+      <img src="img/lumenn/01.png" alt="Lummenn Homepage">
+    </div>
+    <span class="screen-label">Homepage — Hero Section</span>
+  </div>
+
+  <!-- 3-col grid of screens -->
+  <div class="screens-grid">
+
+    <!-- System page: Banner 40 -->
+    <div class="screen-card">
+      <div class="screen-card-chrome">
+        <div class="sc-dots"><div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div></div>
+        <div class="sc-url">lummenn.pt/40</div>
+      </div>
+      <div class="screen-card-img">
+        <!-- SUBSTITUIR: imagem da página Sistema 40 -->
+        <img src="img/lumenn/04.png" alt="Sistema 40 — Banner">
+      </div>
+      <div class="screen-card-info">
+        <span class="screen-card-name">Sistema 40 — Banner</span>
+        <span class="screen-card-tag">Product</span>
+      </div>
+    </div>
+
+    <!-- Project page: Moradia MM -->
+    <div class="screen-card">
+      <div class="screen-card-chrome">
+        <div class="sc-dots"><div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div></div>
+        <div class="sc-url">lummenn.pt/projectos/mm</div>
+      </div>
+      <div class="screen-card-img">
+        <!-- SUBSTITUIR: imagem da página Moradia MM -->
+        <img src="img/lumenn/02.png" alt="Moradia MM — Project">
+      </div>
+      <div class="screen-card-info">
+        <span class="screen-card-name">Moradia MM — Project</span>
+        <span class="screen-card-tag">Case Study</span>
+      </div>
+    </div>
+
+    <!-- Contact page -->
+    <div class="screen-card">
+      <div class="screen-card-chrome">
+        <div class="sc-dots"><div class="sc-dot"></div><div class="sc-dot"></div><div class="sc-dot"></div></div>
+        <div class="sc-url">lummenn.pt/contactos</div>
+      </div>
+      <div class="screen-card-img">
+        <!-- SUBSTITUIR: imagem da página de Contactos -->
+        <img src="img/lumenn/03.png" alt="Contactos — Newsletter">
+      </div>
+      <div class="screen-card-info">
+        <span class="screen-card-name">Contactos — Newsletter</span>
+        <span class="screen-card-tag">Contact</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Full-width: Featured project detail -->
+  <div class="screen-hero" style="margin-top: 4px;">
+    <div class="screen-chrome">
+      <div class="s-dots"><div class="s-dot"></div><div class="s-dot"></div><div class="s-dot"></div></div>
+      <div class="s-url">lummenn.pt/projectos/moradia-fs-ls — Project Detail</div>
+    </div>
+    <div class="screen-body">
+      <!-- SUBSTITUIR: imagem do detalhe de projecto Moradia FS+LS -->
+      <img src="img/lumenn/02.png" alt="Moradia FS+LS — Project Detail">
+    </div>
+    <span class="screen-label">Moradia FS+LS — Project Detail</span>
+  </div>
+
+</section>
+
+<!-- COMPONENTS -->
+<section class="components-section" id="components">
+  <div class="section-header">
+    <h2 class="section-title">Components</h2>
+    <span class="section-num">02</span>
+  </div>
+  <p class="section-desc">The design system built for Lummenn — navigation, colour palette, typography scale, footer, and newsletter — all rooted in the brand's teal-and-white identity.</p>
+
+  <div class="components-grid">
+
+    <!-- Navigation -->
+    <div class="comp-card wide">
+      <div class="comp-label">Navigation</div>
+      <div class="comp-title">Primary Nav</div>
+      <div class="comp-nav-demo">
+        <div class="comp-nav-logo">lummenn</div>
+        <div class="comp-nav-items">
+          <span class="comp-nav-item">30</span>
+          <span class="comp-nav-item">40</span>
+          <span class="comp-nav-item">60</span>
+          <span class="comp-nav-item">70</span>
+          <span class="comp-nav-item">Canyon</span>
+          <span class="comp-nav-item active">Marca</span>
+          <span class="comp-nav-item">Projectos</span>
+          <span class="comp-nav-item">Contatos</span>
+        </div>
+        <div class="comp-nav-lang">Pt | Ing | Fr</div>
+      </div>
+    </div>
+
+    <!-- Colour palette -->
+    <div class="comp-card">
+      <div class="comp-label">Colour System</div>
+      <div class="comp-title">Brand Palette</div>
+      <div class="palette-grid">
+        <div>
+          <div class="palette-swatch" style="background:#2d5a52;"></div>
+          <div class="palette-name">#2D5A52</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#243e38;"></div>
+          <div class="palette-name">#243E38</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#4a8c80;"></div>
+          <div class="palette-name">#4A8C80</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#ffffff; border:1px solid rgba(255,255,255,0.1);"></div>
+          <div class="palette-name">#FFFFFF</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#1e3530;"></div>
+          <div class="palette-name">#1E3530</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#f5f5f5; border:1px solid rgba(255,255,255,0.08);"></div>
+          <div class="palette-name">#F5F5F5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="comp-card">
+      <div class="comp-label">Typography</div>
+      <div class="comp-title">Type Scale</div>
+      <div class="type-showcase">
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'League Spartan',sans-serif; font-size:32px; line-height:1;">Sistemas</div>
+          <div class="type-meta">DM Serif Display / 32px / Display</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'League Spartan',sans-serif; font-size:20px; line-height:1.2; font-style:italic; color:rgba(74,140,128,0.9);">Lummenn 40i</div>
+          <div class="type-meta">DM Serif Italic / 20px</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; opacity:0.6;">PROJECTOS</div>
+          <div class="type-meta">Uppercase / 11px / Nav</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-size:10px; opacity:0.4; line-height:1.8;">Para esta obra, o desafio passava pela integração de um sistema.</div>
+          <div class="type-meta">Body / 10px / 0.4 opacity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="comp-card">
+      <div class="comp-label">Newsletter</div>
+      <div class="comp-title">Subscribe Form</div>
+      <div class="comp-newsletter-demo">
+        <div class="comp-nl-title">Assine<br>a newsletter</div>
+        <div class="comp-nl-row">
+          <div class="comp-nl-field">Email:</div>
+          <div class="comp-nl-btn">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="comp-card wide">
+      <div class="comp-label">Footer</div>
+      <div class="comp-title">Site Footer</div>
+      <div class="comp-footer-demo">
+        <div class="comp-footer-top">
+          <div>
+            <div class="comp-footer-logo">lummenn</div>
+          </div>
+          <div>
+            <div class="comp-footer-col-title">Sistemas</div>
+            <div class="comp-footer-link">Lummenn 30s</div>
+            <div class="comp-footer-link">Lummenn 40i</div>
+            <div class="comp-footer-link">Lummenn 60</div>
+            <div class="comp-footer-link">Canyon</div>
+          </div>
+          <div>
+            <div class="comp-footer-col-title">Projetos</div>
+            <div class="comp-footer-link">Casa QL</div>
+            <div class="comp-footer-link">Cais Afurada</div>
+            <div class="comp-footer-link">Moradia MM</div>
+            <div class="comp-footer-link">Foz Housing 429</div>
+          </div>
+          <div>
+            <div class="comp-footer-col-title">Sobre a marca</div>
+            <div class="comp-footer-link">A Lummenn</div>
+            <div class="comp-footer-link">Newsroom</div>
+            <div class="comp-footer-link">Contactos</div>
+            <div class="comp-footer-link">Subscrição Newsletter</div>
+          </div>
+        </div>
+        <div class="comp-footer-bottom">
+          <div class="comp-footer-policy">Política de privacidade</div>
+          <div class="comp-footer-socials">
+            <div class="comp-footer-social">ig</div>
+            <div class="comp-footer-social">in</div>
+            <div class="comp-footer-social">fb</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MOBILE UI -->
+<section class="mobile-section" id="mobile">
+  <div class="section-header">
+    <h2 class="section-title">Mobile UI</h2>
+    <span class="section-num">02b</span>
+  </div>
+  <p class="section-desc">Responsive design adapted for mobile — maintaining the same architectural restraint across every screen size.</p>
+
+  <div class="mobile-grid">
+    <div class="mobile-item">
+      <img src="img/lumenn/cel1.png" alt="Mobile — Homepage Hero">
+      <div class="mobile-item-label">Homepage — Hero</div>
+    </div>
+    <div class="mobile-item">
+      <img src="img/lumenn/cel2.png" alt="Mobile — Project Gallery">
+      <div class="mobile-item-label">Projecto — Galeria</div>
+    </div>
+    <div class="mobile-item">
+      <img src="img/lumenn/cel3.png" alt="Mobile — Sistema 30">
+      <div class="mobile-item-label">Sistema 30 — Banner</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="section-header">
+    <h2 class="section-title">Process</h2>
+    <span class="section-num">03</span>
+  </div>
+  <div class="process-grid">
+    <div class="proc-step">
+      <span class="proc-num">01</span>
+      <p class="proc-label">Step 01</p>
+      <h3 class="proc-title">Brand Audit</h3>
+      <p class="proc-desc">Analysing Lummenn's existing brand DNA — materials, tone, product language — to define the digital design direction.</p>
+    </div>
+    <div class="proc-step">
+      <span class="proc-num">02</span>
+      <p class="proc-label">Step 02</p>
+      <h3 class="proc-title">Architecture</h3>
+      <p class="proc-desc">Mapping the full site structure — 9 product systems, 11+ projects, multilingual (PT/EN/FR) — into a clear navigation model.</p>
+    </div>
+    <div class="proc-step">
+      <span class="proc-num">03</span>
+      <p class="proc-label">Step 03</p>
+      <h3 class="proc-title">UI Design</h3>
+      <p class="proc-desc">Designing all screens in Figma with meticulous attention to whitespace, typographic rhythm, and the brand's signature teal palette.</p>
+    </div>
+    <div class="proc-step">
+      <span class="proc-num">04</span>
+      <p class="proc-label">Step 04</p>
+      <h3 class="proc-title">Handoff</h3>
+      <p class="proc-desc">Full component library and spec documentation delivered to the development team for implementation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT PROJECT -->
+<a href="project-acoustify.html" class="next-section">
+  <div class="next-bg-grad"></div>
+  <div class="next-content">
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title">Crow</h2>
+    <span class="next-arr">→</span>
+  </div>
+</a>
+
+<div class="proj-footer">
+  <span>Carlos Cerqueira © 2026</span>
+  <span>UI Designer · Porto</span>
+</div>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+});
+(function loopRing() {
+  rx += (mx - rx) * 0.13;
+  ry += (my - ry) * 0.13;
+  ring.style.transform = `translate(${rx - 17}px, ${ry - 17}px)`;
+  requestAnimationFrame(loopRing);
+})();
+
+// SCROLL REVEAL
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.07 });
+
+document.querySelectorAll(
+  '.intro-section, .screen-hero, .screen-card, .comp-card, .proc-step'
+).forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(18px)';
+  el.style.transition = `opacity 0.65s ease ${i * 0.05}s, transform 0.65s ease ${i * 0.05}s`;
+  obs.observe(el);
+});
+
+// Mobile items stagger
+const mobileObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      mobileObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.mobile-item').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.12}s`;
+  mobileObs.observe(el);
+});
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('hamburger');
+  var menu=document.getElementById('mobileMenu');
+  var closeBtn=document.getElementById('mobileClose');
+  var links=menu.querySelectorAll('a');
+  function closeMenu(){btn.classList.remove('open');menu.classList.remove('open');document.body.classList.remove('menu-open');}
+  btn.addEventListener('click',function(){menu.classList.contains('open')?closeMenu():(btn.classList.add('open'),menu.classList.add('open'),document.body.classList.add('menu-open'));});
+  if(closeBtn)closeBtn.addEventListener('click',closeMenu);
+  links.forEach(function(a){a.addEventListener('click',closeMenu);});
+})();
+</script>
+</body>
+</html>

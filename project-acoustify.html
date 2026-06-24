@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CROW — Carlos Cerqueira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=League+Spartan:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;
+  --white:#f0ede8;
+  --accent:#4dff91;
+  --gray:#111;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--white);font-family:'Space Mono',monospace;cursor:none;overflow-x:hidden}
+
+/* CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+#cursorRing{position:fixed;width:34px;height:34px;border:1px solid rgba(77,255,145,0.45);border-radius:50%;pointer-events:none;z-index:9998;top:0;left:0;will-change:transform}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;background:rgba(8,8,8,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+.logo:hover{opacity:1}
+.nav-back{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.45;transition:all .2s}
+.nav-back:hover{opacity:1;color:var(--accent)}
+.nav-back .arr{transition:transform .2s}
+.nav-back:hover .arr{transform:translateX(-4px)}
+.nav-anchors{display:flex;gap:28px;list-style:none}
+.nav-anchors a{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.4;transition:opacity .2s}
+.nav-anchors a:hover{opacity:1}
+
+/* HERO */
+.hero{height:calc(100vh + 2px);position:relative;overflow:visible;margin-bottom:-2px;display:flex;align-items:flex-end;padding:0 48px 80px;background:#1a1a1a}
+.hero-mark{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-size:clamp(300px,45vw,600px);line-height:1;color:rgba(255,255,255,.025);font-family:'League Spartan',sans-serif;user-select:none;white-space:nowrap;animation:markFloat 10s ease-in-out infinite;letter-spacing:-.05em}
+@keyframes markFloat{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-52%) translateX(-16px)}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.5) 50%,transparent 100%),linear-gradient(to right,rgba(8,8,8,.9) 0%,transparent 55%)}
+.hero-bar{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)}
+.hero-content{position:relative;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.project-tag{display:inline-block;font-size:9px;letter-spacing:.25em;text-transform:uppercase;background:var(--accent);color:#000;padding:5px 14px;margin-bottom:20px;animation:fadeUp .7s ease .2s both}
+.hero-title{font-family:'League Spartan',sans-serif;font-size:clamp(60px,10vw,130px);text-transform:uppercase;line-height:.95;animation:fadeUp .7s ease .35s both}
+.hero-meta{display:flex;flex-direction:column;gap:18px;min-width:190px;padding-bottom:8px;animation:fadeUp .7s ease .5s both}
+.meta-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.3;margin-bottom:3px}
+.meta-val{font-size:12px;opacity:.8}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* INTRO */
+.intro-section{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.intro-heading{font-family:'League Spartan',sans-serif;font-size:clamp(28px,3.5vw,46px);line-height:1.15}
+.intro-heading em{font-style:italic;color:var(--accent)}
+.intro-body{display:flex;flex-direction:column;justify-content:center;gap:20px}
+.intro-text{font-size:13px;line-height:1.9;opacity:.55}
+.intro-stats{display:flex;gap:40px;margin-top:8px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px}
+.stat-num{font-family:'League Spartan',sans-serif;font-size:42px;color:var(--accent);line-height:1}
+.stat-label{font-size:10px;opacity:.4;letter-spacing:.1em;margin-top:2px}
+
+/* SHARED SECTION */
+.section-wrap{padding:100px 48px}
+.section-wrap.alt{background:rgba(255,255,255,.02)}
+.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:48px;border-top:1px solid rgba(255,255,255,0.08);padding-top:28px}
+.section-title{font-family:'League Spartan',sans-serif;font-size:clamp(32px,5vw,54px);letter-spacing:.05em}
+.section-num{font-size:11px;opacity:.28;letter-spacing:.15em}
+.section-desc{font-size:12px;opacity:.4;max-width:480px;line-height:1.8;margin-bottom:52px}
+
+/* BROWSER FRAME */
+.browser-frame{background:#0d0d0d;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);transition:transform .5s ease}
+.browser-frame:hover{transform:translateY(-5px)}
+.browser-bar{background:#161616;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.browser-dots{display:flex;gap:6px}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.browser-dot.r{background:#ff5f57}.browser-dot.y{background:#febc2e}.browser-dot.g{background:#28c840}
+.browser-url{flex:1;background:rgba(255,255,255,0.05);border-radius:5px;padding:5px 12px;font-size:10px;letter-spacing:.05em;opacity:.4;margin:0 8px}
+.browser-img{width:100%;display:block;background:#0d1117}
+
+/* PHONE FRAME */
+.phone-frame{background:#0d0d0d;border:1.5px solid rgba(255,255,255,0.15);border-radius:36px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.8);transition:transform .5s ease}
+.phone-frame:hover{transform:translateY(-6px) rotate(-1deg)}
+.phone-top{background:#0d0d0d;height:30px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px}
+.phone-notch{width:70px;height:16px;background:#000;border-radius:0 0 12px 12px}
+.phone-bottom{background:#0d0d0d;height:22px;display:flex;align-items:center;justify-content:center}
+.phone-home{width:80px;height:4px;background:rgba(255,255,255,.2);border-radius:2px}
+.phone-img{width:100%;display:block}
+
+/* TWO-UP GRID */
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.big-small{display:grid;grid-template-columns:3fr 2fr;gap:24px;align-items:start}
+.mobile-row{display:flex;gap:28px;justify-content:center;align-items:flex-start}
+/* No-frame phone mockups */
+.phone-mockups{
+  display:flex;gap:32px;align-items:flex-end;justify-content:center;
+}
+.phone-mockup{
+  position:relative;transition:transform .5s ease;
+}
+.phone-mockup:hover{transform:translateY(-8px)}
+.phone-mockup img{
+  display:block;
+  /* sombra subtil para destacar do fundo */
+  filter:drop-shadow(0 32px 64px rgba(0,0,0,0.7));
+}
+.phone-mockup.small img{ width:220px }
+.phone-mockup.medium img{ width:260px }
+.phone-mockup.large img{ width:300px }
+.phone-mockup-label{
+  text-align:center;margin-top:14px;
+  font-size:9px;letter-spacing:.15em;text-transform:uppercase;opacity:.3;
+}
+
+/* MOCKUP CAPTION */
+.caption{margin-top:16px;display:flex;justify-content:space-between;align-items:center}
+.caption-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;opacity:.3}
+.caption-tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(77,255,145,.3);color:var(--accent);padding:3px 10px}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay{transition-delay:.12s}
+.reveal-delay2{transition-delay:.22s}
+
+/* NEXT PROJECT */
+.next-section {
+  position: relative; overflow: hidden;
+  height: 320px; display: flex; align-items: center; justify-content: center;
+  text-decoration: none; color: var(--white);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.next-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; filter: brightness(0.2); transition: transform 0.6s, filter 0.4s;
+}
+.next-section:hover .next-bg { transform: scale(1.04); filter: brightness(0.32); }
+.next-overlay { position: absolute; inset: 0; background: rgba(8,8,8,0.4); }
+.next-content { position: relative; text-align: center; }
+.next-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.35; margin-bottom: 14px; }
+.next-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(32px, 5vw, 60px); line-height: 1; margin-bottom: 18px;
+  transition: color 0.3s;
+}
+.next-section:hover .next-title { color: var(--accent); }
+.next-arr { font-size: 26px; opacity: 0.45; transition: all 0.3s; display: block; }
+.next-section:hover .next-arr { opacity: 1; transform: translateX(8px); }
+
+
+/* FOOTER */
+.proj-footer{padding:32px 48px;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;opacity:.25;letter-spacing:.1em}
+
+/* MOBILE NAV */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;z-index:300}
+.hamburger span{display:block;width:100%;height:1px;background:var(--white);transition:transform .3s,opacity .3s;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,0.97);backdrop-filter:blur(16px);z-index:250;flex-direction:column;align-items:center;justify-content:center}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'League Spartan',sans-serif;font-size:clamp(36px,10vw,62px);letter-spacing:.06em;color:var(--white);text-decoration:none;opacity:.15;transition:opacity .2s,color .2s;line-height:1.2}
+.mobile-menu a:hover{opacity:1;color:var(--accent)}
+.mobile-close{position:absolute;top:28px;right:24px;background:none;border:none;color:var(--white);font-size:22px;opacity:.4;cursor:pointer;padding:8px}
+
+@media(max-width:900px){
+  nav{padding:20px 24px}
+  .nav-anchors{display:none}
+  .hamburger{display:flex}
+  .hero,.intro-section,.section-wrap{padding-left:24px;padding-right:24px}
+  .hero-content{flex-direction:column;gap:20px;align-items:flex-start;justify-content:flex-end}
+  .hero-meta{flex-direction:row;width:100%;min-width:0;gap:0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px;padding-bottom:0}
+  .hero-meta > div{flex:1}
+  .intro-section{grid-template-columns:1fr;gap:40px}
+  .two-up,.big-small,.three-up{grid-template-columns:1fr}
+  .mobile-row{flex-wrap:wrap}
+  .phone-mockups{flex-direction:column;align-items:center;gap:48px}
+  .phone-mockup.small img,.phone-mockup.medium img,.phone-mockup.large img{width:min(80vw,280px)}
+  
+  .proj-footer{padding:24px}
+}
+/* GRADIENT MESH */
+.mesh-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(10,80,40,0.95) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(20,120,60,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(5,50,25,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(30,100,50,0.7) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(10,60,30,0.8) 0%, transparent 65%),
+    #080808;
+}
+.hero-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 35%;
+  background: linear-gradient(to top, #080808 0%, transparent 100%);
+  z-index: 50;
+  pointer-events: none;
+}
+.hero-mark { display: none !important; }
+.hero-content, .hero-content * { position: relative; }
+.hero-content { z-index: 10 !important; }
+
+/* GRAIN TEXTURE */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: soft-light;
+}
+.hero, .project-hero { border-bottom: none !important; }
+
+
+
+
+
+/* Remove top border from first section after hero */
+.hero + * { border-top: none !important; }
+.project-hero + * { border-top: none !important; }
+.brief-section { border-top: none !important; }
+
+
+
+/* ── HERO MESH ── */
+.hero-mesh {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(10,80,40,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(20,120,60,0.8) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(5,50,25,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(30,100,50,0.65) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(10,60,30,0.75) 0%, transparent 65%),
+    #080808;
+}
+.hero-content { position: relative; z-index: 10 !important; }
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor, #cursorRing { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="logo">CC</a>
+  <ul class="nav-anchors">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#landing">Landing</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#mobile">Mobile</a></li>
+  </ul>
+  <a href="index.html" class="nav-back"><span class="arr">←</span> All Work</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&#x2715;</button>
+  <a href="index.html">← Back</a>
+  <a href="#overview">Overview</a>
+  <a href="#landing">Landing</a>
+  <a href="#workflow">Workflow</a>
+  <a href="#mobile">Mobile</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="mesh-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div>
+      <div class="project-tag">UI Design · Web App · 2024</div>
+      <h1 class="hero-title">CROW</h1>
+    </div>
+    <div class="hero-meta">
+      <div>
+        <div class="meta-label">Client</div>
+        <div class="meta-val">Fullscreen</div>
+      </div>
+      <div>
+        <div class="meta-label">Role</div>
+        <div class="meta-val">UI / UX Design</div>
+      </div>
+      <div>
+        <div class="meta-label">Product</div>
+        <div class="meta-val">Whistleblowing Platform</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro-section">
+  <div>
+    <h2 class="intro-heading">A compliance platform that feels as <em>trustworthy</em> as it needs to be.</h2>
+  </div>
+  <div class="intro-body">
+    <p class="intro-text">CROW is a whistleblowing channel platform built to comply with EU Directive 2019/1937 and Portuguese Law 93/2021. Any company with 50+ employees is legally required to have one. The design challenge: make something institutional feel approachable — and make something sensitive feel completely safe.</p>
+    <p class="intro-text">The UI covers two distinct surfaces: a public-facing report portal and a private back-office for case managers. Both had to work under the same visual system while serving radically different user needs.</p>
+    <div class="intro-stats">
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">Surfaces</div>
+      </div>
+      <div>
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Clients live</div>
+      </div>
+      <div>
+        <div class="stat-num">6</div>
+        <div class="stat-label">Languages</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 — OVERVIEW -->
+<section class="section-wrap" id="overview">
+  <div class="section-header">
+    <h2 class="section-title">Platform Overview</h2>
+    <span class="section-num">01</span>
+  </div>
+  <p class="section-desc">The hero product shot — the platform running live, showing the report submission interface inside the public portal.</p>
+
+  <div class="reveal">
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        </div>
+        <div class="browser-url">crow.fullscreen.pt</div>
+      </div>
+      <!-- TROCA AQUI: substitui o src do <source> e o src do <img> pelo caminho do teu vídeo -->
+      <!-- Exemplo: src="videos/crow-demo.mp4" ou src="img/crow/crow-demo.mp4" -->
+      <video
+        class="browser-img"
+        src="img/crow/overview.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="https://crow.fullscreen.pt/images/img-top-crow-2.png"
+      ></video>
+    </div>
+    <div class="caption">
+      <span class="caption-label">Public Portal — Hero View</span>
+      <span class="caption-tag">Live Product</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 — LANDING -->
+<section class="section-wrap alt" id="landing">
+  <div class="section-header">
+    <h2 class="section-title">Landing Page</h2>
+    <span class="section-num">02</span>
+  </div>
+  <p class="section-desc">Two complementary views from the marketing site — the product UI in context and the features section showcasing the platform's adaptability.</p>
+
+  <div class="two-up">
+    <div class="reveal">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+          </div>
+          <div class="browser-url">crow.fullscreen.pt</div>
+        </div>
+        <img class="browser-img" src="img/crow/landing2.png" alt="CROW demo screenshot" loading="lazy">
+      </div>
+      <div class="caption">
+        <span class="caption-label">Homepage — Product Demo</span>
+        <span class="caption-tag">Marketing</span>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+          </div>
+          <div class="browser-url">crow.fullscreen.pt/#funcionalidades</div>
+        </div>
+        <img class="browser-img" src="img/crow/landing.png" alt="CROW features" loading="lazy">
+      </div>
+      <div class="caption">
+        <span class="caption-label">Features Section</span>
+        <span class="caption-tag">Marketing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 — WORKFLOW -->
+<section class="section-wrap" id="workflow">
+  <div class="section-header">
+    <h2 class="section-title">Case Workflow</h2>
+    <span class="section-num">03</span>
+  </div>
+  <p class="section-desc">The full lifecycle of a report — from submission to archival. Designed as a clear process diagram that works both on desktop and mobile.</p>
+
+  <div class="reveal" style="margin-bottom:24px">
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        </div>
+        <div class="browser-url">crow.fullscreen.pt/#workflow</div>
+      </div>
+      <img class="browser-img" src="img/crow/workflow.png" alt="CROW workflow desktop" loading="lazy">
+    </div>
+    <div class="caption">
+      <span class="caption-label">Workflow Diagram — Desktop</span>
+      <span class="caption-tag">Process</span>
+    </div>
+  </div>
+</section>
+
+<!-- 04 — TESTIMONIALS + MOBILE -->
+<section class="section-wrap alt" id="mobile">
+  <div class="section-header">
+    <h2 class="section-title">Mobile</h2>
+    <span class="section-num">04</span>
+  </div>
+  <p class="section-desc">The app is fully responsive across all mobile screens.</p>
+
+  <!-- MOCKUPS DE IPHONE SEM FRAME CSS -->
+  <!-- Coloca aqui os teus PNG com fundo transparente -->
+  <!-- Ajusta width em .phone-mockup.small / .medium / .large ou inline -->
+  <div class="phone-mockups reveal">
+
+    <div class="phone-mockup small">
+      <!-- TROCA: src="img/acoustify/mobile-01.png" -->
+      <img src="img/crow/mobile01.png" alt="Mobile screen 1" loading="lazy">
+      <div class="phone-mockup-label">Home</div>
+    </div>
+
+    <div class="phone-mockup medium">
+      <!-- TROCA: src="img/acoustify/mobile-02.png" -->
+      <img src="img/crow/mobile02.png" alt="Mobile screen 2" loading="lazy">
+      <div class="phone-mockup-label">Discover</div>
+    </div>
+
+    <div class="phone-mockup large">
+      <!-- TROCA: src="img/acoustify/mobile-03.png" -->
+      <img src="img/crow/mobile03.png" alt="Mobile screen 3" loading="lazy">
+      <div class="phone-mockup-label">Player</div>
+    </div>
+
+    <div class="phone-mockup medium">
+      <!-- TROCA: src="img/acoustify/mobile-04.png" -->
+      <img src="img/crow/mobile04.png" alt="Mobile screen 4" loading="lazy">
+      <div class="phone-mockup-label">Profile</div>
+    </div>
+
+    <div class="phone-mockup small">
+      <!-- TROCA: src="img/acoustify/mobile-05.png" -->
+      <img src="img/crow/mobile05.png" alt="Mobile screen 5" loading="lazy">
+      <div class="phone-mockup-label">Settings</div>
+    </div>
+
+  </div>
+  <!-- FIM MOCKUPS -->
+
+</section>
+
+<!-- NEXT -->
+<a href="project-icharging.html" class="next-section">
+  <div class="next-overlay"></div>
+  <div class="next-content">
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title">i-charging<span class="next-arr">→</span></h2>
+  </div>
+</a>
+
+<div class="proj-footer">
+  <span>Carlos Cerqueira © 2026</span>
+  <span>UI Visual Creative · Porto</span>
+</div>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-17}px,${ry-17}px)`;requestAnimationFrame(loop)})();
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// MOBILE MENU
+(function(){
+  const btn=document.getElementById('hamburger'),menu=document.getElementById('mobileMenu'),closeBtn=document.getElementById('mobileClose');
+  const close=()=>{btn.classList.remove('open');menu.classList.remove('open')};
+  btn.addEventListener('click',()=>menu.classList.contains('open')?close():(btn.classList.add('open'),menu.classList.add('open')));
+  closeBtn.addEventListener('click',close);
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+})();
+</script>
+</body>
+</html>

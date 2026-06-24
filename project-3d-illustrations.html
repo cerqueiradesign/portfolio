@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Illustrations — Carlos Cerqueira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=League+Spartan:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#080808;--white:#f0ede8;--accent:#B93F27;--gray:#111}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--white);font-family:'Space Mono',monospace;cursor:none;overflow-x:hidden}
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;will-change:transform}
+#cursorRing{position:fixed;width:34px;height:34px;border:1px solid rgba(185,63,39,.45);border-radius:50%;pointer-events:none;z-index:9998;top:0;left:0;will-change:transform}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;background:rgba(8,8,8,.75);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--white); text-decoration: none; }
+.logo:hover{opacity:1}
+.nav-back{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.45;transition:all .2s}
+.nav-back:hover{opacity:1;color:var(--accent)}
+.nav-back .arr{transition:transform .2s}
+.nav-back:hover .arr{transform:translateX(-4px)}
+/* HERO */
+.hero {
+  height: calc(100vh + 2px); position: relative; overflow: visible; margin-bottom: -2px;
+  display: flex; align-items: flex-end; padding: 0 48px 80px;
+  background: #080808;
+}
+.hero-mark {
+  position: absolute;
+  right: -2vw; top: 50%; transform: translateY(-50%);
+  font-size: clamp(300px, 45vw, 600px);
+  line-height: 1; color: rgba(255,255,255,.025);
+  font-family: 'League Spartan', sans-serif;
+  user-select: none; white-space: nowrap;
+  animation: markFloat 10s ease-in-out infinite;
+  letter-spacing: -.05em;
+}
+@keyframes markFloat{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-52%) translateX(-16px)}}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,.5) 50%, transparent 100%),
+              linear-gradient(to right, rgba(8,8,8,.9) 0%, transparent 55%);
+}
+.hero-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--accent);
+}
+.hero-content {
+  position: relative; width: 100%;
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;
+}
+.project-tag {
+  display: inline-block; font-size: 9px; letter-spacing: .25em; text-transform: uppercase;
+  background: var(--accent); color: #fff;
+  padding: 5px 14px; margin-bottom: 20px;
+  animation: fadeUp .7s ease .2s both;
+}
+.hero-title {
+  font-family:'League Spartan',sans-serif;
+  font-size:clamp(60px,10vw,130px); text-transform: uppercase;
+  line-height:.95;
+  animation: fadeUp .7s ease .35s both;
+}
+.hero-meta{display:flex;flex-direction:column;gap:18px;min-width:190px;padding-bottom:8px;animation:fadeUp .7s ease .5s both}
+.meta-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.3;margin-bottom:3px}
+.meta-val{font-size:12px;opacity:.8}
+.brief-section{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brief-heading{font-family:'League Spartan',sans-serif;font-size:clamp(26px,3.5vw,44px);line-height:1.15}
+.brief-heading em{font-style:italic;color:var(--accent)}
+.brief-body{display:flex;flex-direction:column;justify-content:center;gap:18px}
+.brief-text{font-size:13px;line-height:1.9;opacity:.55}
+.brief-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+.brief-tag{font-size:9px;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,.15);padding:6px 14px;opacity:.6;transition:all .2s}
+.brief-tag:hover{border-color:var(--accent);color:var(--accent);opacity:1}
+.gallery-section{padding:80px 0 0; scroll-margin-top: 80px;}
+.gallery-section .section-header,
+.gallery-section > p { padding-left: 48px; padding-right: 48px; }
+.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:56px;border-top:1px solid rgba(255,255,255,.08);padding-top:28px}
+.section-title{font-family:'League Spartan',sans-serif;font-size:clamp(32px,5vw,54px);letter-spacing:.05em}
+.section-num{font-size:11px;opacity:.28;letter-spacing:.15em}
+.gallery-grid{columns:2;gap:4px;}
+.gallery-item{break-inside:avoid;margin-bottom:4px;position:relative;overflow:hidden;cursor:none}
+.gallery-item img{width:100%;display:block;transition:transform .6s ease,filter .4s ease;filter:saturate(.85)}
+.gallery-item:hover img{transform:scale(1.03);filter:saturate(1.15)}
+.gallery-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(to top,rgba(8,8,8,.85),transparent);transform:translateY(100%);transition:transform .35s ease}
+.gallery-item:hover .gallery-caption{transform:translateY(0)}
+.cap-title{font-family:'League Spartan',sans-serif;font-size:16px;margin-bottom:3px}
+.cap-sub{font-size:10px;opacity:.5;letter-spacing:.1em}
+.next-section{position:relative;overflow:hidden;height:300px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--white);border-top:1px solid rgba(255,255,255,.06)}
+.next-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.2);transition:transform .6s,filter .4s}
+.next-section:hover .next-bg{transform:scale(1.04);filter:brightness(.32)}
+.next-overlay{position:absolute;inset:0;background:rgba(8,8,8,.45)}
+.next-content{position:relative;text-align:center}
+.next-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;opacity:.35;margin-bottom:14px}
+.next-title{font-family:'League Spartan',sans-serif;font-size:clamp(30px,5vw,58px);line-height:1;margin-bottom:16px;transition:color .3s}
+.next-section:hover .next-title{color:var(--accent)}
+.next-arr{font-size:24px;opacity:.4;transition:all .3s;display:block}
+.next-section:hover .next-arr{opacity:1;transform:translateX(8px)}
+.proj-footer{padding:36px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);opacity:.32;font-size:11px;letter-spacing:.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){nav,.hero,.brief-section,.gallery-section{padding-left:20px;padding-right:20px}.hero-content{flex-direction:column;gap:20px;align-items:flex-start;justify-content:flex-end}.brief-section{grid-template-columns:1fr;gap:32px}.gallery-grid{columns:1}.gallery-section .section-header,.gallery-section > p{padding-left:20px;padding-right:20px}.hero-title{font-size:clamp(44px,12vw,68px)}.hero-meta{flex-direction:row;width:100%;min-width:0;gap:0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px}.hero-meta .meta-item{flex:1}}
+
+/* ILLUSTRATION CARDS */
+.gallery-section {
+  padding: 80px 0 120px;
+  scroll-margin-top: 80px;
+  position: relative;
+}
+.illus-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 0 48px;
+}
+.illus-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.illus-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+.illus-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+.card-num {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+  font-family: 'Space Mono', monospace;
+  z-index: 2;
+  color: #f0ede8;
+}
+.card-label {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  white-space: nowrap;
+  z-index: 2;
+  color: #f0ede8;
+}
+.card-sub {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  font-family: 'Space Mono', monospace;
+}
+.card-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(14px, 1.8vw, 22px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.card-img-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 16px;
+}
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+.card-img-wrap img.broken {
+  display: none;
+}
+.illus-card:hover .card-img-wrap img {
+  transform: scale(1.06);
+}
+@media(max-width:900px) {
+  .illus-grid { grid-template-columns: repeat(2, 1fr); padding: 0 20px; }
+}
+
+
+/* ── CHARACTERS · 3D SHOWCASE ── */
+.characters-section {
+  padding: 100px 0 80px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+.characters-section .section-header {
+  padding: 28px 48px 0;
+  margin-bottom: 24px;
+}
+.characters-intro {
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 56px;
+  max-width: 1400px;
+}
+.characters-heading {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.2;
+}
+.characters-heading em { font-style: italic; color: var(--accent); }
+.characters-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  line-height: 1.85;
+  opacity: 0.55;
+  max-width: 480px;
+}
+.characters-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 0 48px;
+}
+.character-cell {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  transition: border-color 0.3s, background 0.3s;
+}
+.character-cell .char-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  z-index: 0;
+}
+.character-cell:hover {
+  border-color: rgba(77,255,145,0.25);
+  background: rgba(77,255,145,0.02);
+}
+.character-cell:active { cursor: grabbing; }
+.character-cell canvas,
+.character-cell .turntable-img {
+  position: relative;
+  z-index: 1;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.character-cell .char-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.4s;
+}
+.character-cell .char-loader.hidden { opacity: 0; }
+.character-cell .char-meta {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  pointer-events: none;
+}
+.character-cell .char-num {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  font-family: 'Space Mono', monospace;
+  opacity: 0.5;
+  margin-bottom: 4px;
+}
+.character-cell .char-name {
+  font-family: 'League Spartan', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+.character-cell.is-placeholder canvas { display: none; }
+.character-cell .char-meta { display: none; }
+@media (max-width: 1100px) {
+  .characters-row { grid-template-columns: repeat(2, 1fr); }
+  .character-cell:nth-child(n+5) { display: none; }
+}
+@media (max-width: 700px) {
+  .characters-intro { grid-template-columns: 1fr; gap: 24px; padding: 0 20px; }
+  .characters-row { grid-template-columns: 1fr; padding: 0 20px; }
+  .character-cell:nth-child(n+3) { display: block; }
+  .characters-section .section-header { padding: 0 20px; }
+}
+
+/* ── FEATURED — STACKED HORIZONTAL CARDS ── */
+.featured-section {
+  padding: 80px 0 100px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+.featured-section .section-header {
+  padding: 28px 48px 0;
+  margin-bottom: 56px;
+}
+.featured-disclaimer {
+  padding: 0 48px; margin: 0 0 40px; font-size: 12px; line-height: 1.7; opacity: .4; max-width: 560px;
+}
+
+.stack-track {
+  display: flex;
+  height: 72vh;
+  min-height: 460px;
+  max-height: 680px;
+  gap: 0;
+  overflow: hidden;
+}
+
+.featured-list {
+  padding: 0 48px;
+}
+.featured-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 1.4fr;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  cursor: none;
+}
+.featured-list .featured-row:first-child {
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.featured-row:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.featured-idx {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  opacity: 0.55;
+}
+.featured-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.featured-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(16px, 1.8vw, 20px);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.featured-sub {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+  font-family: 'Space Mono', monospace;
+  line-height: 1.6;
+}
+.featured-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.featured-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.featured-row:hover .featured-thumb img { transform: scale(1.04); }
+@media (max-width: 900px) {
+  .featured-list { padding: 0 20px; }
+  .featured-section .section-header { padding: 0 20px; }
+  .featured-disclaimer { padding: 0 20px; }
+}
+@media (max-width: 600px) {
+  .featured-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 28px 0;
+  }
+  .featured-idx { order: -1; }
+  .featured-thumb { aspect-ratio: 3 / 4; }
+}
+
+/* ─ Lightbox ─ */
+#lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(8,8,8,.96);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+  backdrop-filter: blur(12px);
+}
+#lightbox.open { opacity: 1; pointer-events: all; }
+#lightbox img {
+  max-width: 88vw; max-height: 88vh;
+  object-fit: contain; display: block;
+  transform: scale(.94); transition: transform .35s ease;
+  border-radius: 4px;
+}
+#lightbox.open img { transform: scale(1); }
+#lb-close {
+  position: absolute; top: 28px; right: 36px;
+  font-size: 28px; color: var(--white); opacity: .45;
+  cursor: none; transition: opacity .2s; line-height: 1;
+  font-family: 'Space Mono', monospace;
+}
+#lb-close:hover { opacity: 1; }
+#lb-caption {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  text-align: center;
+}
+#lb-cap-title { font-family: 'League Spartan', sans-serif; font-size: 20px; margin-bottom: 4px; }
+#lb-cap-sub { font-size: 10px; opacity: .4; letter-spacing: .15em; text-transform: uppercase; }
+#lb-prev, #lb-next {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 22px; opacity: .35; cursor: none; transition: opacity .2s;
+  font-family: 'Space Mono', monospace; padding: 16px;
+}
+#lb-prev { left: 24px; } #lb-next { right: 24px; }
+#lb-prev:hover, #lb-next:hover { opacity: 1; }
+
+/* COVER SECTION */
+.cover-section {
+  padding: 0 48px 100px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.cover-section .section-header {
+  margin-bottom: 56px;
+}
+.cover-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 4px;
+  align-items: center;
+}
+.cover-item {
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  background: #0d0d0d;
+}
+.cover-item.main {
+  aspect-ratio: 4/3;
+}
+.cover-item.side {
+  aspect-ratio: 3/4;
+}
+.cover-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  filter: brightness(0.9);
+}
+.cover-item:hover img {
+  transform: scale(1.04);
+  filter: brightness(1);
+}
+.cover-caption {
+  padding: 20px 0 0;
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.cover-caption-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(20px, 2.5vw, 32px);
+  opacity: 0.9;
+}
+.cover-caption-desc {
+  font-size: 11px;
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+  max-width: 400px;
+  line-height: 1.7;
+  text-align: right;
+}
+@media(max-width:768px){
+  .cover-section { padding-left: 20px; padding-right: 20px; }
+  .cover-grid { grid-template-columns: 1fr; }
+  .cover-item.main, .cover-item.side { aspect-ratio: 4/3; }
+}
+
+
+/* ── MOBILE NAV ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none; border: none;
+  cursor: pointer; padding: 4px;
+  z-index: 300;
+}
+.hamburger span {
+  display: block;
+  width: 100%; height: 1px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  z-index: 250;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'League Spartan', sans-serif;
+  font-size: clamp(42px, 12vw, 72px);
+  letter-spacing: 0.06em;
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.15;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1.15;
+}
+.mobile-menu a:hover { opacity: 1; color: var(--accent); }
+.mobile-close {
+  position: absolute;
+  top: 28px; right: 24px;
+  background: none; border: none;
+  color: var(--white);
+  font-size: 22px;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  line-height: 1;
+  padding: 8px;
+}
+.mobile-close:hover { opacity: 1; }
+@media (max-width: 768px) {
+  .nav-back { display: none; }
+  .hamburger { display: flex; }
+  body.menu-open { overflow: hidden; }
+  body { cursor: auto; }
+  #cursor, #cursorRing { display: none; }
+}
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #cursor, #cursorRing { display: none; }
+}
+
+/* ── MOBILE NAV ── */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;z-index:300}
+.hamburger span{display:block;width:100%;height:1px;background:var(--white);transition:transform .3s,opacity .3s;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,8,.97);backdrop-filter:blur(16px);z-index:250;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'League Spartan',sans-serif;font-size:clamp(36px,10vw,62px);letter-spacing:.06em;color:var(--white);text-decoration:none;opacity:.15;transition:opacity .2s,color .2s;line-height:1.2}
+.mobile-menu a:hover{opacity:1;color:var(--accent)}
+.mobile-menu .back-link{font-size:clamp(18px,5vw,28px);opacity:.3;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:24px;width:80%;text-align:center}
+.mobile-close{position:absolute;top:28px;right:24px;background:none;border:none;color:var(--white);font-size:22px;opacity:.4;cursor:pointer;transition:opacity .2s;line-height:1;padding:8px}
+.mobile-close:hover{opacity:1}
+@media(max-width:768px){.nav-back{display:none}.hamburger{display:flex}body.menu-open{overflow:hidden}}
+
+.chars-tools {
+  display: flex; align-items: center; gap: 24px;
+  padding: 24px 48px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 3px;
+}
+.chars-tools-label {
+  font-size: 9px; letter-spacing: .25em; text-transform: uppercase; opacity: .3;
+}
+.chars-tools-list { display: flex; gap: 10px; }
+.chars-tool {
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 5px 12px; opacity: .6;
+}
+/* GRADIENT MESH */
+.mesh-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(120,30,15,0.95) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(185,63,39,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(80,20,10,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(150,45,25,0.7) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(60,15,8,0.8) 0%, transparent 65%),
+    #080808;
+}
+.hero-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 35%;
+  background: linear-gradient(to top, #080808 0%, transparent 100%);
+  z-index: 50;
+  pointer-events: none;
+}
+.hero-mark { display: none !important; }
+.hero-content, .hero-content * { position: relative; }
+.hero-content { z-index: 10 !important; }
+
+/* GRAIN TEXTURE */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: soft-light;
+}
+.hero, .project-hero { border-bottom: none !important; }
+
+
+
+
+
+/* Remove top border from first section after hero */
+.hero + * { border-top: none !important; }
+.project-hero + * { border-top: none !important; }
+.brief-section { border-top: none !important; }
+
+
+
+/* ── HERO MESH ── */
+.hero-mesh {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 25%, rgba(120,30,15,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(185,63,39,0.8) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 55% at 45% 70%, rgba(80,20,10,0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 88% 12%, rgba(150,45,25,0.65) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(60,15,8,0.75) 0%, transparent 65%),
+    #080808;
+}
+.hero-content { position: relative; z-index: 10 !important; }
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+<nav>
+  <a href="index.html" class="logo">CC</a>
+  <a href="index.html" class="nav-back"><span class="arr">←</span> All Work</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose" aria-label="Close">&#x2715;</button>
+  <a href="index.html" class="mobile-link back-link">← All Work</a>
+  <a href="#interactive-posters" class="mobile-link">Interactive Posters</a>
+  <a href="#featured" class="mobile-link">Featured</a>
+</div><section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="mesh-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div>
+      <div class="project-tag">3D · Illustration</div>
+      <h1 class="hero-title">3D Illustrations</h1>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">Medium</div>
+        <div class="meta-val">3D Illustration</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tool</div>
+        <div class="meta-val">Blender</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Year</div>
+        <div class="meta-val">2021 — 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="brief-section">
+  <div>
+    <h2 class="brief-heading"><em>3D Illustrations</em><br>— the project.</h2>
+  </div>
+  <div class="brief-body">
+    <p class="brief-text">Character and scene illustrations inspired by pop culture — Grogu from The Mandalorian, Simba from The Lion King, Hagrid, Doraemon, Stitch, and more. Each piece built entirely in Blender.</p>
+    <p class="brief-text">These illustrations were a creative exercise in translating 2D characters and iconography into three-dimensional space with realistic lighting, materials and rendering. A direct expression of personal aesthetic sensibility.</p>
+    <div class="brief-tags">
+      <span class="brief-tag">3D · Illustration</span>
+      <span class="brief-tag">Blender</span>
+      <span class="brief-tag">3D Art</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lb-prev">←</span>
+  <img id="lb-img" src="" alt="">
+  <span id="lb-next">→</span>
+  <div id="lb-caption">
+    <div id="lb-cap-title"></div>
+    <div id="lb-cap-sub"></div>
+  </div>
+  <span id="lb-close">✕</span>
+</div>
+
+<!-- FEATURED GALLERY — STACKED HORIZONTAL CARDS -->
+<!-- CHARACTERS · 3D SHOWCASE -->
+<section class="characters-section" id="interactive-posters">
+  <div class="section-header">
+    <h2 class="section-title">Interactive Posters</h2>
+    <span class="section-num">Real-time 3D · Interactive</span>
+  </div>
+
+  <div class="characters-intro">
+    <h3 class="characters-heading">
+      A small <em>cast</em> modelled, rigged and animated from scratch.
+    </h3>
+    <p class="characters-desc">
+      An ongoing series exploring character design, rigging and stylised animation in Blender. Each figure is built as a self-contained study — modelled, textured, rigged and animated end-to-end. Drag to interact.
+    </p>
+  </div>
+
+  <div class="characters-row" id="charactersRow">
+    <div class="character-cell"
+         data-frames="36"
+         data-folder="img/3D/turntable/c01"
+         data-prefix=""
+         data-pad="4"
+         data-ext="png">
+      <img class="char-poster" src="img/3D/posters/luffy.png" alt="" draggable="false">
+      <span class="char-loader">Loading…</span>
+      <div class="char-meta">
+        <div class="char-num">01</div>
+        <div class="char-name"></div>
+      </div>
+    </div>
+    <div class="character-cell"
+         data-frames="36"
+         data-folder="img/3D/turntable/c02"
+         data-prefix=""
+         data-pad="4"
+         data-ext="png">
+      <img class="char-poster" src="img/3D/posters/bean.png" alt="" draggable="false">
+      <span class="char-loader">Loading…</span>
+      <div class="char-meta">
+        <div class="char-num">02</div>
+        <div class="char-name"></div>
+      </div>
+    </div>
+    <div class="character-cell"
+         data-frames="36"
+         data-folder="img/3D/turntable/c03"
+         data-prefix=""
+         data-pad="4"
+         data-ext="png">
+      <img class="char-poster" src="img/3D/posters/posters_SHREK.png" alt="" draggable="false">
+      <span class="char-loader">Loading…</span>
+      <div class="char-meta">
+        <div class="char-num">03</div>
+        <div class="char-name"></div>
+      </div>
+    </div>
+    <div class="character-cell"
+         data-frames="36"
+         data-folder="img/3D/turntable/C04"
+         data-prefix=""
+         data-pad="4"
+         data-ext="png">
+      <img class="char-poster" src="img/3D/posters/naruto.png" alt="" draggable="false">
+      <span class="char-loader">Loading…</span>
+      <div class="char-meta">
+        <div class="char-num">04</div>
+        <div class="char-name"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chars-tools">
+    <span class="chars-tools-label">Tools used</span>
+    <div class="chars-tools-list">
+      <span class="chars-tool">Blender</span>
+      <span class="chars-tool">Photoshop</span>
+      <span class="chars-tool">Illustrator</span>
+    </div>
+  </div>
+</section>
+
+<section class="featured-section" id="featured">
+  <div class="section-header">
+    <h2 class="section-title">Featured</h2>
+    <span class="section-num">Selected works</span>
+  </div>
+
+  <p class="featured-disclaimer">These product collaborations are personal concept exercises created for portfolio purposes only, and are not affiliated with, endorsed by, or produced in partnership with the brands shown.</p>
+
+  <div class="featured-list" id="stackTrack">
+
+    <div class="featured-row lb-trigger"
+         data-src="img/3D/hawkins_horizontal.png"
+         data-title="" data-sub="">
+      <span class="featured-idx">01</span>
+      <div class="featured-info">
+        <div class="featured-title">Revolut X Stranger Things</div>
+        <div class="featured-sub">Collaboration<br>2026</div>
+      </div>
+      <div class="featured-thumb">
+        <picture>
+          <source media="(min-width: 601px)" srcset="img/3D/hawkins_horizontal.png">
+          <img src="img/3D/hawkins.png"
+               onerror="this.src='img/calendario/Projeto_Calendário-07.png'" alt="Revolut X Stranger Things">
+        </picture>
+      </div>
+    </div>
+
+    <div class="featured-row lb-trigger"
+         data-src="img/3D/monster_1920.png"
+         data-title="" data-sub="">
+      <span class="featured-idx">02</span>
+      <div class="featured-info">
+        <div class="featured-title">Monster X Jurassic Park</div>
+        <div class="featured-sub">Collaboration<br>2026</div>
+      </div>
+      <div class="featured-thumb">
+        <picture>
+          <source media="(min-width: 601px)" srcset="img/3D/monster_1920.png">
+          <img src="img/3D/monster.png"
+               onerror="this.src='img/calendario/Projeto_Calendário-02.png'" alt="Monster X Jurassic Park">
+        </picture>
+      </div>
+    </div>
+
+
+    <div class="featured-row lb-trigger"
+         data-src="img/3D/sand_horizontal.png"
+         data-title="" data-sub="">
+      <span class="featured-idx">05</span>
+      <div class="featured-info">
+        <div class="featured-title">Stanley x Dune</div>
+        <div class="featured-sub">Collaboration<br>2026</div>
+      </div>
+      <div class="featured-thumb">
+        <picture>
+          <source media="(min-width: 601px)" srcset="img/3D/sand_horizontal.png">
+          <img src="img/3D/sand.png"
+               onerror="this.src='img/calendario/Projeto_Calendário-01.png'" alt="Stanley x Dune">
+        </picture>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<section class="gallery-section">
+  <div class="section-header">
+    <h2 class="section-title">Shitty History</h2>
+  </div>
+  <p style="margin-bottom: 48px; font-family:'Space Mono',monospace; font-size:10px; line-height:1.8; opacity:.4; max-width:560px;">An ongoing illustration project that retells real world events — political, cultural and historical — through a comic and satirical lens. Each piece distills a moment in time into a single image. The goal is to bring the project to life as a printed calendar.</p>
+  <div class="illus-grid">
+    <div class="illus-card" style="background:#1a1a2e; color:#f0ede8;">
+      <div class="card-num">01</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-01.png" data-real="img/3D/sintra1.png" alt="Florence Cathedral" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#e63946; color:#f0ede8;">
+      <div class="card-num">02</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-02.png" data-real="img/3D/grogu.png" alt="Grogu" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#457b9d; color:#f0ede8;">
+      <div class="card-num">03</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-03.png" data-real="img/3D/digimonh.png" alt="Digimon" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#f4a261; color:#1a1a1a;">
+      <div class="card-num">04</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-04.png" data-real="img/3D/encanto.png" alt="Encanto" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#2d6a4f; color:#f0ede8;">
+      <div class="card-num">05</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-05.png" data-real="img/3D/stirch.png" alt="Stitch" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#6b4226; color:#f0ede8;">
+      <div class="card-num">06</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-06.png" data-real="img/3D/hagrid.png" alt="Hagrid" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#1d3557; color:#f0ede8;">
+      <div class="card-num">07</div>
+   
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-07.png" data-real="img/3D/doraemon2.png" alt="Doraemon" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#2b2d42; color:#4dff91;">
+      <div class="card-num">08</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-08.png" data-real="img/3D/f.png" alt="3D Illustration" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#8338ec; color:#f0ede8;">
+      <div class="card-num">09</div>
+    
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-09.png" data-real="img/3D/grogu.png" alt="Grogu — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#023e8a; color:#f0ede8;">
+      <div class="card-num">10</div>
+   
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-10.png" data-real="img/3D/sintra1.png" alt="Cathedral Study" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#c77dff; color:#1a1a1a;">
+      <div class="card-num">11</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-11.png" data-real="img/3D/encanto.png" alt="Encanto — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#06d6a0; color:#1a1a1a;">
+      <div class="card-num">12</div>
+    
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-12.png" data-real="img/3D/stirch.png" alt="Stitch — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#ef233c; color:#f0ede8;">
+      <div class="card-num">13</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-13.png" data-real="img/3D/digimonh.png" alt="Digimon — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#344e41; color:#f0ede8;">
+      <div class="card-num">14</div>
+  
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-14.png" data-real="img/3D/hagrid.png" alt="Hagrid — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#f72585; color:#f0ede8;">
+      <div class="card-num">15</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-15.png" data-real="img/3D/doraemon2.png" alt="Doraemon — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#7b2d8b; color:#f0ede8;">
+      <div class="card-num">16</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-16.png" data-real="img/3D/f.png" alt="Abstract — Alt" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#3a0ca3; color:#f0ede8;">
+      <div class="card-num">17</div>
+    
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-17.png" data-real="img/3D/grogu.png" alt="Baby Yoda" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#480ca8; color:#f0ede8;">
+      <div class="card-num">18</div>
+      <div class="card-label">
+        <span class="card-sub">3D Scene</span>
+        <span class="card-title">Architecture Study</span>
+      </div>
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-18.png" data-real="img/3D/sintra1.png" alt="Architecture Study" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#b5179e; color:#f0ede8;">
+      <div class="card-num">19</div>
+   
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-19.png" data-real="img/3D/encanto.png" alt="Magic Scene" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#4361ee; color:#f0ede8;">
+      <div class="card-num">20</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-20.png" data-real="img/3D/stirch.png" alt="Blue Friend" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#7209b7; color:#f0ede8;">
+      <div class="card-num">21</div>
+      
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-21.png" data-real="img/3D/digimonh.png" alt="Digital Monster" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#1b4332; color:#f0ede8;">
+      <div class="card-num">22</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-22.png" data-real="img/3D/hagrid.png" alt="Gentle Giant" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#0077b6; color:#f0ede8;">
+      <div class="card-num">23</div>
+   
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-23.png" data-real="img/3D/doraemon2.png" alt="Future Cat" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#10002b; color:#4dff91;">
+      <div class="card-num">24</div>
+  
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-24.png" data-real="img/3D/f.png" alt="Neon Abstract" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#606c38; color:#f0ede8;">
+      <div class="card-num">25</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-25.png" data-real="img/3D/grogu.png" alt="The Child" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#212529; color:#f0ede8;">
+      <div class="card-num">26</div>
+      <div class="card-label">
+        <span class="card-sub">Architecture</span>
+        <span class="card-title">Gothic Arches</span>
+      </div>
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-26.png" data-real="img/3D/sintra1.png" alt="Gothic Arches" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#d62828; color:#f0ede8;">
+      <div class="card-num">27</div>
+    
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-27.png" data-real="img/3D/encanto.png" alt="Colombian Magic" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+    <div class="illus-card" style="background:#003049; color:#f0ede8;">
+      <div class="card-num">28</div>
+     
+      <div class="card-img-wrap">
+        <img src="img/calendario/Projeto_Calendário-28.png" data-real="img/3D/stirch.png" alt="Experiment 626" loading="lazy" onerror="this.src=this.getAttribute('data-real')">
+      </div>
+    </div>
+  </div>
+</section>
+<a href="project-lummenn.html" class="next-section">
+  <div class="next-overlay"></div>
+  <div class="next-content">
+    <p class="next-label">Next Project</p>
+    <h2 class="next-title">Lummenn</h2>
+    <span class="next-arr">→</span>
+  </div>
+</a>
+<div class="proj-footer">
+  <span>Carlos Cerqueira © 2026</span>
+  <span>3D Visual Creative · Porto</span>
+</div>
+<script>
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-17}px,${ry-17}px)`;requestAnimationFrame(loop)})();
+const pi=document.getElementById('pImg');
+window.addEventListener('scroll',()=>{pi.style.transform=`translateY(${window.scrollY*.28}px)`;});
+
+// ── SCROLL REVEAL (brief section only) ─────────────────────
+const briefObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+      briefObs.unobserve(e.target);
+    }
+  });
+},{threshold:.07});
+document.querySelectorAll('.brief-section').forEach((el,i)=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(18px)';
+  el.style.transition=`opacity .65s ease ${i*.05}s,transform .65s ease ${i*.05}s`;
+  briefObs.observe(el);
+});
+
+// ── GALLERY · SIMPLE FADE-UP REVEAL ─────────────────────
+const cardObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      cardObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.illus-card').forEach((card, i) => {
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(20px)';
+  card.style.transition = `opacity 0.6s ease ${i * 0.04}s, transform 0.6s ease ${i * 0.04}s, box-shadow 0.4s ease`;
+  cardObs.observe(card);
+
+  // Mark broken images
+  const img = card.querySelector('img');
+  if (img) {
+    if (img.complete && img.naturalWidth === 0) img.classList.add('broken');
+    img.addEventListener('error', () => img.classList.add('broken'));
+    img.addEventListener('load', () => {
+      if (img.naturalWidth === 0) img.classList.add('broken');
+    });
+  }
+});
+
+
+// ── LIGHTBOX ──────────────────────────────────────────────
+const lb       = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+const lbTitle  = document.getElementById('lb-cap-title');
+const lbSub    = document.getElementById('lb-cap-sub');
+const lbClose  = document.getElementById('lb-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+
+const lbItems = [];
+
+document.querySelectorAll('.lb-trigger').forEach(el => {
+  const idx = lbItems.length;
+  lbItems.push({
+    src:   el.dataset.src   || el.querySelector('img')?.src || '',
+    title: el.dataset.title || '',
+    sub:   el.dataset.sub   || ''
+  });
+  el.addEventListener('click', () => openLb(idx));
+});
+
+document.querySelectorAll('.illus-card').forEach(card => {
+  const img = card.querySelector('img');
+  if (!img) return;
+  const idx = lbItems.length;
+  lbItems.push({ src: img.src, fallback: img.dataset.real || '', title: img.alt || '3D Illustration', sub: '3D · Blender' });
+  card.addEventListener('click', () => openLb(idx));
+});
+
+let cur = 0;
+function openLb(idx) {
+  cur = idx;
+  const item = lbItems[idx];
+  lbImg.src = item.src;
+  lbImg.onerror = () => { if (item.fallback) lbImg.src = item.fallback; };
+  lbTitle.textContent = item.title;
+  lbSub.textContent   = item.sub;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+function next() { openLb((cur + 1) % lbItems.length); }
+function prev() { openLb((cur - 1 + lbItems.length) % lbItems.length); }
+lbClose.addEventListener('click', closeLb);
+lbNext.addEventListener('click', next);
+lbPrev.addEventListener('click', prev);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeLb();
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft')  prev();
+});
+</script>
+
+<!-- Characters · Turntable PNG sequence -->
+<script>
+(function initTurntable() {
+  const cells = document.querySelectorAll('.character-cell[data-frames]');
+  if (cells.length === 0) return;
+
+  cells.forEach(cell => {
+    const totalFrames = parseInt(cell.dataset.frames) || 36;
+    const folder = cell.dataset.folder;
+    const prefix = cell.dataset.prefix || '';
+    const pad = parseInt(cell.dataset.pad) || 3;
+    const ext = cell.dataset.ext || 'png';
+    const loaderEl = cell.querySelector('.char-loader');
+
+    // Build frame URLs
+    const frames = [];
+    for (let i = 1; i <= totalFrames; i++) {
+      const num = String(i).padStart(pad, '0');
+      frames.push(`${folder}/${prefix}${num}.${ext}`);
+    }
+
+    // Preload all frames into image elements
+    const imgs = [];
+    let loadedCount = 0;
+    let failedCount = 0;
+
+    // Create active image element shown in cell
+    const activeImg = document.createElement('img');
+    activeImg.className = 'turntable-img';
+    activeImg.alt = '';
+    activeImg.draggable = false;
+    cell.appendChild(activeImg);
+
+    function updateLoaderProgress() {
+      if (!loaderEl) return;
+      const pct = Math.round((loadedCount / totalFrames) * 100);
+      loaderEl.textContent = `Loading ${pct}%`;
+    }
+
+    frames.forEach((src, idx) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        updateLoaderProgress();
+        if (loadedCount === 1) {
+          // Show first frame as soon as it loads
+          activeImg.src = src;
+        }
+        if (loadedCount === totalFrames) {
+          if (loaderEl) loaderEl.classList.add('hidden');
+        }
+      };
+      img.onerror = () => {
+        failedCount++;
+        if (failedCount === totalFrames && loaderEl) {
+          loaderEl.textContent = 'Load failed';
+        }
+      };
+      img.src = src;
+      imgs[idx] = img;
+    });
+
+    // Interaction state
+    let currentFrame = 0;
+    let targetFrame = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartFrame = 0;
+    let gestureDecided = false;   // has the browser figured out scroll vs rotate yet?
+    let isRotateGesture = false;  // true once horizontal intent is confirmed
+
+    function setFrame(idx) {
+      // Wrap around
+      idx = ((idx % totalFrames) + totalFrames) % totalFrames;
+      currentFrame = idx;
+      if (imgs[idx] && imgs[idx].complete) {
+        activeImg.src = frames[idx];
+      }
+    }
+
+    // Hover: frame follows cursor X (mouse only — touch uses drag)
+    cell.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      if (isDragging) return;
+      const rect = cell.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width;  // 0..1
+      const idx = Math.floor(nx * totalFrames);
+      targetFrame = idx;
+      setFrame(idx);
+    });
+
+    // Drag: continuous rotation
+    cell.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      dragStartFrame = currentFrame;
+      if (e.pointerType === 'touch') {
+        // Wait to see if the gesture is horizontal (rotate) or vertical (scroll)
+        gestureDecided = false;
+        isRotateGesture = false;
+      } else {
+        // Mouse: always rotate immediately
+        gestureDecided = true;
+        isRotateGesture = true;
+        cell.setPointerCapture?.(e.pointerId);
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+
+      if (e.pointerType === 'touch' && !gestureDecided) {
+        // Need a minimum movement before committing to a direction
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        gestureDecided = true;
+        isRotateGesture = Math.abs(dx) > Math.abs(dy);
+        if (isRotateGesture) {
+          // Horizontal intent confirmed — take over the gesture for rotation
+          cell.setPointerCapture?.(e.pointerId);
+        } else {
+          // Vertical intent — let the page scroll, stop tracking this gesture
+          isDragging = false;
+          return;
+        }
+      }
+
+      if (!isRotateGesture) return;
+      const cellW = cell.clientWidth;
+      const framesDelta = Math.round((dx / cellW) * totalFrames);
+      targetFrame = dragStartFrame + framesDelta;
+      setFrame(targetFrame);
+    });
+
+    function endDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      try { cell.releasePointerCapture?.(e.pointerId); } catch (_) {}
+    }
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
+  });
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('hamburger');
+  var menu=document.getElementById('mobileMenu');
+  var closeBtn=document.getElementById('mobileClose');
+  var links=menu.querySelectorAll('a');
+  function closeMenu(){btn.classList.remove('open');menu.classList.remove('open');document.body.classList.remove('menu-open');}
+  btn.addEventListener('click',function(){menu.classList.contains('open')?closeMenu():(btn.classList.add('open'),menu.classList.add('open'),document.body.classList.add('menu-open'));});
+  if(closeBtn)closeBtn.addEventListener('click',closeMenu);
+  links.forEach(function(a){a.addEventListener('click',closeMenu);});
+})();
+</script>
+</body>
+</html>
